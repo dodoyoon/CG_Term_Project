@@ -1,0 +1,68 @@
+# Blender3D MTL File:
+# Material Count: 6
+
+newmtl Pants_Flowers.png
+Ns 10.000000
+Ka 0.300000 0.300000 0.300000
+Kd 1.000000 1.000000 1.000000
+Ks 0.800000 0.800000 0.800000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Skin_Patrick.png
+
+
+newmtl Skin_skin.png
+Ns 10.000000
+Ka 0.300000 0.300000 0.300000
+Kd 1.000000 1.000000 1.000000
+Ks 0.800000 0.800000 0.800000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Flowers.png
+
+
+newmtl Brows_Color.png
+Ns 10.000000
+Ka 0.300000 0.300000 0.300000
+Kd 1.000000 1.000000 1.000000
+Ks 0.800000 0.800000 0.800000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Color.png
+
+
+newmtl Mouth
+Ns 10.000000
+Ka 0.300000 0.300000 0.300000
+Kd 1.000000 1.000000 1.000000
+Ks 0.800000 0.800000 0.800000
+Ni 1.000000
+d 1.000000
+illum 1
+
+
+newmtl Eyes_Color.png
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Color.png
+
+
+newmtl Pupils_Color.png
+Ns 96.078431
+Ka 0.300000 0.300000 0.300000
+Kd 1.000000 1.000000 1.000000
+Ks 0.800000 0.800000 0.800000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Color.png
+
+

@@ -7,10 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED05E13C245E83CC0012152D /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED05E13B245E83CC0012152D /* GLUT.framework */; };
+		ED05E13D245E83CC0012152D /* GLUT.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED05E13B245E83CC0012152D /* GLUT.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED0D70492412AC48004EB2C3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED0D70482412AC48004EB2C3 /* main.cpp */; };
+		ED0D70512412AD12004EB2C3 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ED0D70502412AD12004EB2C3 /* libGLEW.2.1.0.dylib */; };
+		ED0D70552412B02D004EB2C3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED0D70542412B02D004EB2C3 /* OpenGL.framework */; };
+		ED0D70602413A001004EB2C3 /* LoadShaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED0D705C2413A000004EB2C3 /* LoadShaders.cpp */; };
+		ED348E09246F815F009DFEA5 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = ED348E08246F815F009DFEA5 /* tiny_obj_loader.cc */; };
+		ED348E0B246F81D1009DFEA5 /* loadobj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED348E0A246F81D1009DFEA5 /* loadobj.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		ED05E13E245E83CC0012152D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED05E13D245E83CC0012152D /* GLUT.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ED0D70432412AC48004EB2C3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -23,8 +41,47 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		ED05E13B245E83CC0012152D /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GLUT.framework; sourceTree = "<group>"; };
 		ED0D70452412AC48004EB2C3 /* OpenGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED0D70482412AC48004EB2C3 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		ED0D70502412AD12004EB2C3 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = ../../../../../../../usr/local/Cellar/glew/2.1.0_1/lib/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
+		ED0D70542412B02D004EB2C3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../../Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
+		ED0D705C2413A000004EB2C3 /* LoadShaders.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadShaders.cpp; sourceTree = "<group>"; };
+		ED0D705E2413A001004EB2C3 /* LoadShaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadShaders.h; sourceTree = "<group>"; };
+		ED2FCA74247D080200447FA7 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		ED348E02246F8017009DFEA5 /* loadobj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loadobj.h; sourceTree = "<group>"; };
+		ED348E07246F815F009DFEA5 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
+		ED348E08246F815F009DFEA5 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tiny_obj_loader.cc; sourceTree = "<group>"; };
+		ED348E0A246F81D1009DFEA5 /* loadobj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loadobj.cpp; sourceTree = "<group>"; };
+		EDB35E98248CB04B00932839 /* fac_270.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fac_270.jpg; sourceTree = "<group>"; };
+		EDB35E99248CB04B00932839 /* antenna.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = antenna.jpg; sourceTree = "<group>"; };
+		EDB35E9A248CB04B00932839 /* DysCementWalls.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DysCementWalls.jpg; sourceTree = "<group>"; };
+		EDB35E9B248CB04B00932839 /* flatro5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = flatro5.jpg; sourceTree = "<group>"; };
+		EDB35E9C248CB04B00932839 /* wnd1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wnd1.jpg; sourceTree = "<group>"; };
+		EDB35E9D248CB04B00932839 /* bh2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bh2.jpg; sourceTree = "<group>"; };
+		EDB35E9E248CB04B00932839 /* flatro0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = flatro0.jpg; sourceTree = "<group>"; };
+		EDB35E9F248CB04B00932839 /* fac_231.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fac_231.jpg; sourceTree = "<group>"; };
+		EDB35EA0248CB04B00932839 /* 003disgudsi1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 003disgudsi1.jpg; sourceTree = "<group>"; };
+		EDB35EA1248CB04B00932839 /* dfg1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dfg1.jpg; sourceTree = "<group>"; };
+		EDB35EA2248CB04B00932839 /* flatro9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = flatro9.jpg; sourceTree = "<group>"; };
+		EDB35EA3248CB04B00932839 /* c2b_03_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = c2b_03_01.jpg; sourceTree = "<group>"; };
+		EDB35EA4248CB04B00932839 /* fac_291.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fac_291.jpg; sourceTree = "<group>"; };
+		EDB35EA5248CB04B00932839 /* gr1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gr1.jpg; sourceTree = "<group>"; };
+		EDB35EA6248CB04B00932839 /* fac_250.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fac_250.jpg; sourceTree = "<group>"; };
+		EDB35EA7248CB04B00932839 /* fac_240.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fac_240.jpg; sourceTree = "<group>"; };
+		EDB35EA8248CB04B00932839 /* fma.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fma.jpg; sourceTree = "<group>"; };
+		EDB35EA9248CB04B00932839 /* fac_280.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fac_280.jpg; sourceTree = "<group>"; };
+		EDB35EAA248CB04B00932839 /* serpentine city.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "serpentine city.obj"; sourceTree = "<group>"; };
+		EDB35EAB248CB04B00932839 /* serpentine_city.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = serpentine_city.mtl; sourceTree = "<group>"; };
+		EDB35EAD248CB04B00932839 /* Patrick.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Patrick.obj; sourceTree = "<group>"; };
+		EDB35EAE248CB04B00932839 /* Flowers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flowers.png; sourceTree = "<group>"; };
+		EDB35EAF248CB04B00932839 /* Skin_Patrick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Skin_Patrick.png; sourceTree = "<group>"; };
+		EDB35EB0248CB04B00932839 /* Color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Color.png; sourceTree = "<group>"; };
+		EDB35EB1248CB04B00932839 /* Patrick.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Patrick.mtl; sourceTree = "<group>"; };
+		EDDF0FF1249104EC0075B679 /* LEGO_CAR_B2.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LEGO_CAR_B2.mtl; sourceTree = "<group>"; };
+		EDDF0FF2249104EC0075B679 /* LEGO_CAR_B2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LEGO_CAR_B2.obj; sourceTree = "<group>"; };
+		EDDF0FF32491EDE40075B679 /* cart.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = cart.frag; sourceTree = "<group>"; };
+		EDDF0FF42491EDE40075B679 /* cart.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = cart.vert; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +89,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED0D70512412AD12004EB2C3 /* libGLEW.2.1.0.dylib in Frameworks */,
+				ED0D70552412B02D004EB2C3 /* OpenGL.framework in Frameworks */,
+				ED05E13C245E83CC0012152D /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +103,7 @@
 			children = (
 				ED0D70472412AC48004EB2C3 /* OpenGLTest */,
 				ED0D70462412AC48004EB2C3 /* Products */,
+				ED0D704F2412AD12004EB2C3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +118,95 @@
 		ED0D70472412AC48004EB2C3 /* OpenGLTest */ = {
 			isa = PBXGroup;
 			children = (
+				EDB35E95248CB04B00932839 /* project_obj */,
+				ED0D705C2413A000004EB2C3 /* LoadShaders.cpp */,
+				ED0D705E2413A001004EB2C3 /* LoadShaders.h */,
 				ED0D70482412AC48004EB2C3 /* main.cpp */,
+				ED2FCA74247D080200447FA7 /* stb_image.h */,
+				ED348E02246F8017009DFEA5 /* loadobj.h */,
+				ED348E0A246F81D1009DFEA5 /* loadobj.cpp */,
+				ED348E08246F815F009DFEA5 /* tiny_obj_loader.cc */,
+				ED348E07246F815F009DFEA5 /* tiny_obj_loader.h */,
+				EDDF0FF32491EDE40075B679 /* cart.frag */,
+				EDDF0FF42491EDE40075B679 /* cart.vert */,
 			);
 			path = OpenGLTest;
+			sourceTree = "<group>";
+		};
+		ED0D704F2412AD12004EB2C3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED05E13B245E83CC0012152D /* GLUT.framework */,
+				ED0D70542412B02D004EB2C3 /* OpenGL.framework */,
+				ED0D70502412AD12004EB2C3 /* libGLEW.2.1.0.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ED696520248CE79600934952 /* Car */ = {
+			isa = PBXGroup;
+			children = (
+				EDDF0FF1249104EC0075B679 /* LEGO_CAR_B2.mtl */,
+				EDDF0FF2249104EC0075B679 /* LEGO_CAR_B2.obj */,
+			);
+			path = Car;
+			sourceTree = "<group>";
+		};
+		EDB35E95248CB04B00932839 /* project_obj */ = {
+			isa = PBXGroup;
+			children = (
+				ED696520248CE79600934952 /* Car */,
+				EDB35E96248CB04B00932839 /* City */,
+				EDB35EAC248CB04B00932839 /* Patrick */,
+			);
+			path = project_obj;
+			sourceTree = "<group>";
+		};
+		EDB35E96248CB04B00932839 /* City */ = {
+			isa = PBXGroup;
+			children = (
+				EDB35E97248CB04B00932839 /* Maps */,
+				EDB35EAA248CB04B00932839 /* serpentine city.obj */,
+				EDB35EAB248CB04B00932839 /* serpentine_city.mtl */,
+			);
+			path = City;
+			sourceTree = "<group>";
+		};
+		EDB35E97248CB04B00932839 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				EDB35E98248CB04B00932839 /* fac_270.jpg */,
+				EDB35E99248CB04B00932839 /* antenna.jpg */,
+				EDB35E9A248CB04B00932839 /* DysCementWalls.jpg */,
+				EDB35E9B248CB04B00932839 /* flatro5.jpg */,
+				EDB35E9C248CB04B00932839 /* wnd1.jpg */,
+				EDB35E9D248CB04B00932839 /* bh2.jpg */,
+				EDB35E9E248CB04B00932839 /* flatro0.jpg */,
+				EDB35E9F248CB04B00932839 /* fac_231.jpg */,
+				EDB35EA0248CB04B00932839 /* 003disgudsi1.jpg */,
+				EDB35EA1248CB04B00932839 /* dfg1.jpg */,
+				EDB35EA2248CB04B00932839 /* flatro9.jpg */,
+				EDB35EA3248CB04B00932839 /* c2b_03_01.jpg */,
+				EDB35EA4248CB04B00932839 /* fac_291.jpg */,
+				EDB35EA5248CB04B00932839 /* gr1.jpg */,
+				EDB35EA6248CB04B00932839 /* fac_250.jpg */,
+				EDB35EA7248CB04B00932839 /* fac_240.jpg */,
+				EDB35EA8248CB04B00932839 /* fma.jpg */,
+				EDB35EA9248CB04B00932839 /* fac_280.jpg */,
+			);
+			path = Maps;
+			sourceTree = "<group>";
+		};
+		EDB35EAC248CB04B00932839 /* Patrick */ = {
+			isa = PBXGroup;
+			children = (
+				EDB35EAD248CB04B00932839 /* Patrick.obj */,
+				EDB35EAE248CB04B00932839 /* Flowers.png */,
+				EDB35EAF248CB04B00932839 /* Skin_Patrick.png */,
+				EDB35EB0248CB04B00932839 /* Color.png */,
+				EDB35EB1248CB04B00932839 /* Patrick.mtl */,
+			);
+			path = Patrick;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -72,6 +219,7 @@
 				ED0D70412412AC48004EB2C3 /* Sources */,
 				ED0D70422412AC48004EB2C3 /* Frameworks */,
 				ED0D70432412AC48004EB2C3 /* CopyFiles */,
+				ED05E13E245E83CC0012152D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -119,7 +267,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED0D70602413A001004EB2C3 /* LoadShaders.cpp in Sources */,
+				ED348E09246F815F009DFEA5 /* tiny_obj_loader.cc in Sources */,
 				ED0D70492412AC48004EB2C3 /* main.cpp in Sources */,
+				ED348E0B246F81D1009DFEA5 /* loadobj.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +327,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -228,7 +379,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -238,7 +389,21 @@
 		ED0D704D2412AC48004EB2C3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/glew/2.1.0_1/include,
+					/usr/local/Cellar/glm/0.9.9.5/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glew/2.1.0_1/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -246,7 +411,21 @@
 		ED0D704E2412AC48004EB2C3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/glew/2.1.0_1/include,
+					/usr/local/Cellar/glm/0.9.9.5/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glew/2.1.0_1/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
