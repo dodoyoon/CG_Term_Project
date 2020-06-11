@@ -13,9 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/GLUT.framework/Headers/glut.h"
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/LoadShaders.h"
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/loadobj.h"
+#include "/Users/seungbin/Desktop/CG_Term_Project/GLUT.framework/Headers/glut.h"
+#include "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/LoadShaders.h"
+#include "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/loadobj.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -25,7 +25,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/stb_image.h"
+#include "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -51,18 +51,19 @@ using namespace tinyobj;
 GLuint program;
 int shading_mode = 0;
 bool isSportsCar = true ; // 나중에 바꿔줘
+GLfloat acceleration_rate = 0.0f ;
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/serpentine city.obj",
+    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
+    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/City/serpentine city.obj"
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/",
+    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Patrick/",
+    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Car/",
+    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/City/",
 };
 
 float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f}; //{0.5f, 1.0f, 50.0f};
@@ -267,14 +268,15 @@ void render(int color_mode){
     glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(T));
     
     
-    GLfloat max_speed = 0.03 ;
+//    GLfloat max_speed = 0.03 ;
     GLfloat speed = 0.0f ;
-    GLfloat acceleration_rate = 1.0f ;
+//    GLfloat acceleration_rate = 1.0f ;
     
     
     if(is_forward_pressed){
-        
-        car_speed += max_speed ;
+        acceleration_rate = 1.0f;
+        speed = acceleration_rate * 0.01;
+        car_speed += speed ;
         cout << "speed: " << speed << endl ;
         if(is_left_pressed){
             theta += 0.003 ;
@@ -308,7 +310,19 @@ void render(int color_mode){
         }else if(is_right_pressed){
             theta += 0.003 ;
         }
+    }else{
+        if(acceleration_rate > 0){
+            cout << "acceleration_rate: " << acceleration_rate << endl ;
+            acceleration_rate -= 0.01;
+            if(acceleration_rate<0){
+                acceleration_rate = 0.0f;
+            }
+            speed = acceleration_rate * 0.001;
+            car_speed += speed ;
+            cout << "speed: " << speed << endl ;
+        }
     }
+    
     
     
     
@@ -490,8 +504,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
