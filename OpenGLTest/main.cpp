@@ -13,9 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/sungminkim/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/GLUT.framework/Headers/glut.h"
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/LoadShaders.h"
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/loadobj.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -25,7 +25,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -38,8 +38,10 @@
      (flag) == GL_NEAREST_MIPMAP_NEAREST)
 
 
-#define NUM_OF_MODELS 2
-
+#define NUM_OF_MODELS 3
+#define CITY 2
+#define PATRICK 0
+#define CAR 1
 
 typedef std::vector<GLfloat> GLvec;
 using namespace glm;
@@ -52,18 +54,18 @@ bool isSportsCar = true ; // 나중에 바꿔줘
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-//    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/serpentine city.obj",
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
-//    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/",
 };
 
-float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f}; //{0.5f, 1.0f, 50.0f};
+float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f}; //{0.5f, 1.0f, 50.0f};
 
 vector<real_t> vertices[NUM_OF_MODELS];
 vector<real_t> normals[NUM_OF_MODELS];
@@ -323,8 +325,13 @@ void render(int color_mode){
             location = glGetUniformLocation(program, "M");
             mat4 M(1.0f);
             
-            
-            if(i == 0){ // Patrick
+            M = scale(M, vec3(0.5f));
+            M = rotate(M, 1.0f, vec3(0.f, 1.f, 0.f));
+            M = rotate(M, 0.35f, vec3(1.f, 0.f, 1.f));
+            //M = rotate(M, , vec3(0.f, 1.f, 0.f));
+            M = translate(M, vec3(0.0f, -0.4f, 0.0f));
+            M = translate(M, vec3(0.0f, 0.55f, 0.0f));
+            if(i == PATRICK){ // Patrick
                 glUniform1i(UVAR("isSportsCar"), 0);
                 
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
@@ -332,19 +339,20 @@ void render(int color_mode){
                 M = translate(M, vec3(0.15f, 0.2f, 0.35f)) ;// move patrick to the car sit
                 
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
-            }else if(i == 1){ // Car
+            }else if(i == CAR){ // Car
                 glUniform1i(UVAR("isSportsCar"), 1);
                 
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
                 
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
-            }else if(i == 2){ // City
+            }else if(i == CITY){ // City
                 glUniform1i(UVAR("isSportsCar"), 0);
 
-                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
-                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
-
+                //M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+                //M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
+                M = translate(M, vec3(0.0f, 0.0f, -34.5f)) ;
+                M = translate(M, vec3(-12.0f, 0.0f, 0.0f)) ;
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
             }
             
@@ -482,8 +490,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
