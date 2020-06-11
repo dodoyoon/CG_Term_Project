@@ -38,7 +38,7 @@
      (flag) == GL_NEAREST_MIPMAP_NEAREST)
 
 
-#define NUM_OF_MODELS 1
+#define NUM_OF_MODELS 2
 
 
 typedef std::vector<GLfloat> GLvec;
@@ -48,22 +48,22 @@ using namespace tinyobj;
 
 GLuint program;
 int shading_mode = 0;
-//bool isSportsCar = true ; // 나중에 바꿔줘
+bool isSportsCar = true ; // 나중에 바꿔줘
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
 //    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
-//    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj"
 };
 
 const char* basedir [NUM_OF_MODELS] = {
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
 //    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
-//    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/"
 };
 
-float model_scales[NUM_OF_MODELS] = {1.0f};
+float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f}; //{0.5f, 1.0f, 50.0f};
 
 vector<real_t> vertices[NUM_OF_MODELS];
 vector<real_t> normals[NUM_OF_MODELS];
@@ -109,7 +109,7 @@ void special_up(int key, int x, int y) ;
 void keyboard(unsigned char key, int x, int y) ;
 
 static bool has_file(const char* filepath);
-bool load_tex(const char* basedir, vector<real_t>& texcoords_out, map<string, size_t>&                  texmap_out,
+bool load_tex(const char* basedir, vector<real_t>& texcoords_out, map<string, size_t>& texmap_out,
               const vector<real_t>& texcoords, const vector<shape_t>& shapes, const vector<material_t>& materials,
               GLint min_filter, GLint mag_filter);
 void render(int color_mode);
@@ -256,13 +256,6 @@ void render(int color_mode){
     mat4 V = camera.get_viewing();
     mat4 T(1.0f);
     mat4 P = camera.get_projection(aspect);
-    
-    
-//    if(isSportsCar){
-//        glUniform1i(UVAR("isSportsCar"), 1);
-//    }else{
-//        glUniform1i(UVAR("isSportsCar"), 0);
-//    }
 
     location = glGetUniformLocation(program, "V");
     glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(V));
@@ -276,12 +269,10 @@ void render(int color_mode){
     GLfloat speed = 0.0f ;
     GLfloat acceleration_rate = 1.0f ;
     
+    
     if(is_forward_pressed){
-        if(speed <= max_speed){
-            speed = speed + (acceleration_rate * 0.01) ;
-        }
         
-        car_speed += speed ;
+        car_speed += max_speed ;
         cout << "speed: " << speed << endl ;
         if(is_left_pressed){
             theta += 0.003 ;
@@ -318,17 +309,45 @@ void render(int color_mode){
     }
     
     
+    
+    //    if(isSportsCar){
+    //        glUniform1i(UVAR("isSportsCar"), 1);
+    //    }else{
+    //        glUniform1i(UVAR("isSportsCar"), 0);
+    //    }
 
     if(is_obj_valid){
         for(int i=0; i<NUM_OF_MODELS; ++i){
             glBindVertexArray(vao[i]);
-            mat4 M(1.0f);
-            
-            M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
-            M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
             
             location = glGetUniformLocation(program, "M");
-            glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+            mat4 M(1.0f);
+            
+            
+            if(i == 0){ // Patrick
+                glUniform1i(UVAR("isSportsCar"), 0);
+                
+                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
+                M = translate(M, vec3(0.15f, 0.2f, 0.35f)) ;// move patrick to the car sit
+                
+                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+            }else if(i == 1){ // Car
+                glUniform1i(UVAR("isSportsCar"), 1);
+                
+                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
+                
+                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+            }else if(i == 2){ // City
+                glUniform1i(UVAR("isSportsCar"), 0);
+
+                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
+
+                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+            }
+            
             draw_obj_model(i, color_mode, i+1);
         }
     }

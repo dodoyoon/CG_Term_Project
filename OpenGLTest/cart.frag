@@ -15,7 +15,7 @@ uniform int ObjectCode;
 uniform sampler2D sampler;
 uniform vec4 uColor;
 
-//uniform int isSportsCar;
+uniform int isSportsCar;
 
 uniform mat4 M;
 uniform mat4 P;
@@ -89,8 +89,10 @@ void phong_shading() //for phong shading
         else
             FragColor = shading(LightPos_ec, vec3(fPosition), vec3(-fNormal));
         
-//        if(isSportsCar == 0)
-//        FragColor *= texture(sampler, fTexcoord);
+        if(isSportsCar == 0)
+            FragColor *= texture(sampler, fTexcoord);
+        
+            
     }
 }
 
