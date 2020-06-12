@@ -82,6 +82,23 @@
 		EDDF0FF2249104EC0075B679 /* LEGO_CAR_B2.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LEGO_CAR_B2.obj; sourceTree = "<group>"; };
 		EDDF0FF32491EDE40075B679 /* cart.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = cart.frag; sourceTree = "<group>"; };
 		EDDF0FF42491EDE40075B679 /* cart.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = cart.vert; sourceTree = "<group>"; };
+		EDE824F92493544700CD2FB0 /* tex_barrier 01_d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tex_barrier 01_d.png"; sourceTree = "<group>"; };
+		EDE824FA2493544700CD2FB0 /* tex_barrier 01_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tex_barrier 01_s.png"; sourceTree = "<group>"; };
+		EDE824FC2493544700CD2FB0 /* Road Barrier 01a.an8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Road Barrier 01a.an8"; sourceTree = "<group>"; };
+		EDE824FD2493544700CD2FB0 /* Road Barrier 01a.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Road Barrier 01a.obj"; sourceTree = "<group>"; };
+		EDE824FE2493544700CD2FB0 /* Road Barrier 01a.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Road Barrier 01a.mtl"; sourceTree = "<group>"; };
+		EDE824FF2493544700CD2FB0 /* Road Barrier 01a.3ds */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Road Barrier 01a.3ds"; sourceTree = "<group>"; };
+		EDE825012493544700CD2FB0 /* road barrier 01c.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "road barrier 01c.obj"; sourceTree = "<group>"; };
+		EDE825022493544700CD2FB0 /* Road Barrier 01c.an8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Road Barrier 01c.an8"; sourceTree = "<group>"; };
+		EDE825032493544700CD2FB0 /* road barrier 01c.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "road barrier 01c.mtl"; sourceTree = "<group>"; };
+		EDE825042493544700CD2FB0 /* Road Barrier 01c.lum */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Road Barrier 01c.lum"; sourceTree = "<group>"; };
+		EDE825052493544700CD2FB0 /* Road Barrier 01c.3ds */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Road Barrier 01c.3ds"; sourceTree = "<group>"; };
+		EDE825072493544700CD2FB0 /* Road Barrier 01b.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Road Barrier 01b.obj"; sourceTree = "<group>"; };
+		EDE825082493544700CD2FB0 /* Road Barrier 01b.an8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Road Barrier 01b.an8"; sourceTree = "<group>"; };
+		EDE825092493544700CD2FB0 /* Road Barrier 01b.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Road Barrier 01b.mtl"; sourceTree = "<group>"; };
+		EDE8250A2493544700CD2FB0 /* Road Barrier 01b.3ds */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Road Barrier 01b.3ds"; sourceTree = "<group>"; };
+		EDE8250B2493544700CD2FB0 /* Read Me.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Read Me.txt"; sourceTree = "<group>"; };
+		EDE8250C2493544700CD2FB0 /* tex_barrier 01_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tex_barrier 01_n.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +172,7 @@
 		EDB35E95248CB04B00932839 /* project_obj */ = {
 			isa = PBXGroup;
 			children = (
+				EDE824F82493544700CD2FB0 /* road_barrier */,
 				ED696520248CE79600934952 /* Car */,
 				EDB35E96248CB04B00932839 /* City */,
 				EDB35EAC248CB04B00932839 /* Patrick */,
@@ -207,6 +225,54 @@
 				EDB35EB1248CB04B00932839 /* Patrick.mtl */,
 			);
 			path = Patrick;
+			sourceTree = "<group>";
+		};
+		EDE824F82493544700CD2FB0 /* road_barrier */ = {
+			isa = PBXGroup;
+			children = (
+				EDE824FA2493544700CD2FB0 /* tex_barrier 01_s.png */,
+				EDE824F92493544700CD2FB0 /* tex_barrier 01_d.png */,
+				EDE824FB2493544700CD2FB0 /* Road Barrier 01 */,
+				EDE825002493544700CD2FB0 /* Road Barrier 03 */,
+				EDE825062493544700CD2FB0 /* Road Barrier 02 */,
+				EDE8250B2493544700CD2FB0 /* Read Me.txt */,
+				EDE8250C2493544700CD2FB0 /* tex_barrier 01_n.png */,
+			);
+			path = road_barrier;
+			sourceTree = "<group>";
+		};
+		EDE824FB2493544700CD2FB0 /* Road Barrier 01 */ = {
+			isa = PBXGroup;
+			children = (
+				EDE824FC2493544700CD2FB0 /* Road Barrier 01a.an8 */,
+				EDE824FD2493544700CD2FB0 /* Road Barrier 01a.obj */,
+				EDE824FE2493544700CD2FB0 /* Road Barrier 01a.mtl */,
+				EDE824FF2493544700CD2FB0 /* Road Barrier 01a.3ds */,
+			);
+			path = "Road Barrier 01";
+			sourceTree = "<group>";
+		};
+		EDE825002493544700CD2FB0 /* Road Barrier 03 */ = {
+			isa = PBXGroup;
+			children = (
+				EDE825012493544700CD2FB0 /* road barrier 01c.obj */,
+				EDE825022493544700CD2FB0 /* Road Barrier 01c.an8 */,
+				EDE825032493544700CD2FB0 /* road barrier 01c.mtl */,
+				EDE825042493544700CD2FB0 /* Road Barrier 01c.lum */,
+				EDE825052493544700CD2FB0 /* Road Barrier 01c.3ds */,
+			);
+			path = "Road Barrier 03";
+			sourceTree = "<group>";
+		};
+		EDE825062493544700CD2FB0 /* Road Barrier 02 */ = {
+			isa = PBXGroup;
+			children = (
+				EDE825072493544700CD2FB0 /* Road Barrier 01b.obj */,
+				EDE825082493544700CD2FB0 /* Road Barrier 01b.an8 */,
+				EDE825092493544700CD2FB0 /* Road Barrier 01b.mtl */,
+				EDE8250A2493544700CD2FB0 /* Road Barrier 01b.3ds */,
+			);
+			path = "Road Barrier 02";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

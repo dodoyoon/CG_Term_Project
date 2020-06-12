@@ -13,9 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/seungbin/Desktop/CG_Term_Project/GLUT.framework/Headers/glut.h"
-#include "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/LoadShaders.h"
-#include "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/loadobj.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -25,7 +25,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/stb_image.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -38,7 +38,8 @@
      (flag) == GL_NEAREST_MIPMAP_NEAREST)
 
 
-#define NUM_OF_MODELS 3
+#define NUM_OF_MODELS 4
+#define WALL 3
 #define CITY 2
 #define PATRICK 0
 #define CAR 1
@@ -55,18 +56,20 @@ GLfloat acceleration_rate = 0.0f ;
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/City/serpentine city.obj"
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/road_barrier/Road Barrier 01/Road Barrier 01a.obj",
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Patrick/",
-    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/Car/",
-    "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/project_obj/City/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/road_barrier/Road Barrier 01/",
 };
 
-float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f}; //{0.5f, 1.0f, 50.0f};
+float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f, 1.0f}; //{0.5f, 1.0f, 50.0f};
 
 vector<real_t> vertices[NUM_OF_MODELS];
 vector<real_t> normals[NUM_OF_MODELS];
@@ -368,6 +371,9 @@ void render(int color_mode){
                 M = translate(M, vec3(0.0f, 0.0f, -34.5f)) ;
                 M = translate(M, vec3(-12.0f, 0.0f, 0.0f)) ;
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+            }else if(i == WALL){ // wall
+                glUniform1i(UVAR("isSportsCar"), 0);
+                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
             }
             
             draw_obj_model(i, color_mode, i+1);
@@ -504,8 +510,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/seungbin/Desktop/CG_Term_Project/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
