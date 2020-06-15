@@ -15,6 +15,8 @@
 		ED0D70602413A001004EB2C3 /* LoadShaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED0D705C2413A000004EB2C3 /* LoadShaders.cpp */; };
 		ED348E09246F815F009DFEA5 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = ED348E08246F815F009DFEA5 /* tiny_obj_loader.cc */; };
 		ED348E0B246F81D1009DFEA5 /* loadobj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED348E0A246F81D1009DFEA5 /* loadobj.cpp */; };
+		ED3B66A42497509D00BAF876 /* libode.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ED85BDB9249503ED00DCA26A /* libode.8.dylib */; };
+		ED3B66A72497513900BAF876 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED3B66A62497513900BAF876 /* AGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +55,26 @@
 		ED348E07246F815F009DFEA5 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
 		ED348E08246F815F009DFEA5 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tiny_obj_loader.cc; sourceTree = "<group>"; };
 		ED348E0A246F81D1009DFEA5 /* loadobj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loadobj.cpp; sourceTree = "<group>"; };
+		ED3B666E249743C800BAF876 /* libBulletDynamics.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletDynamics.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletDynamics.2.89.dylib; sourceTree = "<group>"; };
+		ED3B666F249743C800BAF876 /* libBulletInverseDynamics.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletInverseDynamics.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletInverseDynamics.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6670249743C800BAF876 /* libBullet3Collision.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBullet3Collision.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBullet3Collision.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6671249743C800BAF876 /* libBulletInverseDynamicsUtils.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletInverseDynamicsUtils.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletInverseDynamicsUtils.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6672249743C800BAF876 /* libBullet3Geometry.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBullet3Geometry.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBullet3Geometry.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6673249743C800BAF876 /* libBullet3Common.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBullet3Common.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBullet3Common.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6674249743C800BAF876 /* libBulletCollision.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletCollision.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletCollision.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6675249743C800BAF876 /* libBullet3Dynamics.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBullet3Dynamics.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBullet3Dynamics.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6676249743C800BAF876 /* libBullet3OpenCL_clew.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBullet3OpenCL_clew.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBullet3OpenCL_clew.2.89.dylib; sourceTree = "<group>"; };
+		ED3B6677249743C800BAF876 /* libBulletFileLoader.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletFileLoader.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletFileLoader.2.89.dylib; sourceTree = "<group>"; };
+		ED3B668C2497450000BAF876 /* libGIMPACTUtils.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGIMPACTUtils.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libGIMPACTUtils.2.89.dylib; sourceTree = "<group>"; };
+		ED3B668D2497450000BAF876 /* libConvexDecomposition.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libConvexDecomposition.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libConvexDecomposition.2.89.dylib; sourceTree = "<group>"; };
+		ED3B668E2497450000BAF876 /* libBulletSoftBody.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletSoftBody.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletSoftBody.2.89.dylib; sourceTree = "<group>"; };
+		ED3B668F2497450000BAF876 /* libBulletXmlWorldImporter.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletXmlWorldImporter.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletXmlWorldImporter.2.89.dylib; sourceTree = "<group>"; };
+		ED3B66902497450000BAF876 /* libBulletWorldImporter.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletWorldImporter.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletWorldImporter.2.89.dylib; sourceTree = "<group>"; };
+		ED3B66912497450000BAF876 /* libBulletRobotics.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libBulletRobotics.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libBulletRobotics.2.89.dylib; sourceTree = "<group>"; };
+		ED3B66922497450000BAF876 /* libHACD.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libHACD.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libHACD.2.89.dylib; sourceTree = "<group>"; };
+		ED3B66932497450000BAF876 /* libLinearMath.2.89.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libLinearMath.2.89.dylib; path = ../../../../usr/local/Cellar/bullet/2.89/lib/libLinearMath.2.89.dylib; sourceTree = "<group>"; };
+		ED3B66A62497513900BAF876 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = System/Library/Frameworks/AGL.framework; sourceTree = SDKROOT; };
+		ED85BDB9249503ED00DCA26A /* libode.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libode.8.dylib; path = ../../../../usr/local/Cellar/ode/0.16.1/lib/libode.8.dylib; sourceTree = "<group>"; };
 		EDB35E98248CB04B00932839 /* fac_270.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = fac_270.jpg; sourceTree = "<group>"; };
 		EDB35E99248CB04B00932839 /* antenna.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = antenna.jpg; sourceTree = "<group>"; };
 		EDB35E9A248CB04B00932839 /* DysCementWalls.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DysCementWalls.jpg; sourceTree = "<group>"; };
@@ -107,6 +129,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED0D70512412AD12004EB2C3 /* libGLEW.2.1.0.dylib in Frameworks */,
+				ED3B66A42497509D00BAF876 /* libode.8.dylib in Frameworks */,
+				ED3B66A72497513900BAF876 /* AGL.framework in Frameworks */,
 				ED0D70552412B02D004EB2C3 /* OpenGL.framework in Frameworks */,
 				ED05E13C245E83CC0012152D /* GLUT.framework in Frameworks */,
 			);
@@ -153,6 +177,26 @@
 		ED0D704F2412AD12004EB2C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ED3B66A62497513900BAF876 /* AGL.framework */,
+				ED3B66912497450000BAF876 /* libBulletRobotics.2.89.dylib */,
+				ED3B668E2497450000BAF876 /* libBulletSoftBody.2.89.dylib */,
+				ED3B66902497450000BAF876 /* libBulletWorldImporter.2.89.dylib */,
+				ED3B668F2497450000BAF876 /* libBulletXmlWorldImporter.2.89.dylib */,
+				ED3B668D2497450000BAF876 /* libConvexDecomposition.2.89.dylib */,
+				ED3B668C2497450000BAF876 /* libGIMPACTUtils.2.89.dylib */,
+				ED3B66922497450000BAF876 /* libHACD.2.89.dylib */,
+				ED3B66932497450000BAF876 /* libLinearMath.2.89.dylib */,
+				ED3B6670249743C800BAF876 /* libBullet3Collision.2.89.dylib */,
+				ED3B6673249743C800BAF876 /* libBullet3Common.2.89.dylib */,
+				ED3B6675249743C800BAF876 /* libBullet3Dynamics.2.89.dylib */,
+				ED3B6672249743C800BAF876 /* libBullet3Geometry.2.89.dylib */,
+				ED3B6676249743C800BAF876 /* libBullet3OpenCL_clew.2.89.dylib */,
+				ED3B6674249743C800BAF876 /* libBulletCollision.2.89.dylib */,
+				ED3B666E249743C800BAF876 /* libBulletDynamics.2.89.dylib */,
+				ED3B6677249743C800BAF876 /* libBulletFileLoader.2.89.dylib */,
+				ED3B666F249743C800BAF876 /* libBulletInverseDynamics.2.89.dylib */,
+				ED3B6671249743C800BAF876 /* libBulletInverseDynamicsUtils.2.89.dylib */,
+				ED85BDB9249503ED00DCA26A /* libode.8.dylib */,
 				ED05E13B245E83CC0012152D /* GLUT.framework */,
 				ED0D70542412B02D004EB2C3 /* OpenGL.framework */,
 				ED0D70502412AD12004EB2C3 /* libGLEW.2.1.0.dylib */,
@@ -464,10 +508,13 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/Cellar/glew/2.1.0_1/include,
 					/usr/local/Cellar/glm/0.9.9.5/include,
+					/usr/local/Cellar/ode/0.16.1/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.1.0_1/lib,
+					/usr/local/Cellar/ode/0.16.1/lib,
+					/usr/local/Cellar/bullet/2.89/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -486,10 +533,13 @@
 				HEADER_SEARCH_PATHS = (
 					/usr/local/Cellar/glew/2.1.0_1/include,
 					/usr/local/Cellar/glm/0.9.9.5/include,
+					/usr/local/Cellar/ode/0.16.1/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.1.0_1/lib,
+					/usr/local/Cellar/ode/0.16.1/lib,
+					/usr/local/Cellar/bullet/2.89/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";

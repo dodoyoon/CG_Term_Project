@@ -17,6 +17,10 @@
 #include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
 #include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
 
+#include "/usr/local/Cellar/ode/0.16.1/include/ode/ode.h"
+#include "/usr/local/Cellar/ode/0.16.1/include/ode/common.h"
+
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <vector>
@@ -38,7 +42,7 @@
      (flag) == GL_NEAREST_MIPMAP_NEAREST)
 
 
-#define NUM_OF_MODELS 4
+#define NUM_OF_MODELS 3
 #define WALL 3
 #define CITY 2
 #define PATRICK 0
@@ -58,18 +62,16 @@ GLfloat acceleration_rate = 0.0f ;
 const char* model_files [NUM_OF_MODELS] = {
     "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
     "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/road_barrier/Road Barrier 01/Road Barrier 01a.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj"
 };
 
 const char* basedir [NUM_OF_MODELS] = {
     "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
     "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
     "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/road_barrier/Road Barrier 01/",
 };
 
-float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f, 1.0f}; //{0.5f, 1.0f, 50.0f};
+float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f}; //{0.5f, 1.0f, 50.0f};
 
 vector<real_t> vertices[NUM_OF_MODELS];
 vector<real_t> normals[NUM_OF_MODELS];
@@ -91,6 +93,13 @@ bool is_tex_valid = false;
 GLfloat car_speed = 0.0f ;
 GLfloat theta = 0.0f ;
 GLfloat accel = 1.0f;
+GLfloat deltacp = 0.0f;
+GLfloat deltath = 0.0f;
+GLfloat deltay = 0.0f;
+
+// Track the car position
+vec3 car_pos(1.0f) ;
+vec3 cam_mag(0.5f) ;
 
 bool is_forward_pressed = false ;
 bool is_back_pressed = false ;
@@ -99,6 +108,26 @@ bool is_right_pressed = false ;
 bool is_booster_pressed = false ;
 int cnt = 0 ;
 
+#ifdef dSINGLE
+#define dEpsilon FLT_EPSILON
+#else
+#define dEpsilon DBL_EPSILON
+#endif
+
+static dWorldID ode_world;
+static dSpaceID ode_space;
+static dJointGroupID ode_contactgroup;
+static bool pause = true;
+
+static dGeomID ode_plane_geom;
+
+static dBodyID ode_sphere_body;
+static dGeomID ode_sphere_geom;
+
+static dBodyID ode_trimesh_body;
+static dGeomID ode_trimesh_geom;
+static dTriMeshDataID ode_trimesh_data;
+static std::vector<dTriIndex> ode_trimesh_index;
 
 int button_pressed[3] = {GLUT_UP, GLUT_UP, GLUT_UP};
 int mouse_pos[2] = {0, 0};
@@ -163,6 +192,8 @@ struct Camera {
     Camera() :eye(0, 0, 8), center(0, 0, 0), up(0, 1, 0), zoom_factor(1.0f), projection_mode(ORTHOGRAPHIC), z_near(0.01f),
                 z_far(100.0f), fovy((float)(M_PI/180.0*(30.0))), x_right(1.2)
                 {}
+    
+    //lookat() requires a position, target and up vector respectively
     glm::mat4 get_viewing() { return glm::lookAt(eye, center, up); }
     glm::mat4 get_projection(float aspect){
         glm::mat4 P;
@@ -206,28 +237,29 @@ int main(int argc, char** argv) {
 }
 
 void init(){
-    program = build_program();
     
+    program = build_program();
+     
     for(size_t k = 0; k<NUM_OF_MODELS; ++k){
         attrib_t attrib;
         is_obj_valid = load_obj(model_files[k], basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
-        
+
         glActiveTexture(GL_TEXTURE0);
         is_tex_valid = load_tex(basedir[k], texcoords[k], texmap[k], attrib.texcoords, shapes[k], materials[k], GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
-        
-        
+
+
         if(!is_obj_valid)
             cout << ">>> Can't load the obj" << endl ;
         if(!is_tex_valid)
             cout << ">>> Can't load the tex" << endl ;
-        
-        
-    
+
+
+
         colors[k].resize(vertices[k].size());
         for(int i=0; i<colors[k].size(); ++i){
             colors[k][i] = 1.0f;
         }
-        
+
         printf("Loading %zu...\n", k);
         glGenVertexArrays(1, &vao[k]);
         glBindVertexArray(vao[k]);
@@ -237,7 +269,16 @@ void init(){
         bind_buffer(vbo[k][2], texcoords[k], program, "vTexcoord", 2);
         printf("END!!\n");
     }
-   
+    
+    
+    /* Set the initial camera position */
+    vec3 normalized_vec = (camera.center + vec3(0.0f, 0.0f, 1.0f)) - camera.center ;
+    normalized_vec = normalize(normalized_vec) ;
+    
+    camera.eye = camera.center + normalized_vec * cam_mag ;
+    camera.eye += vec3(0.0f, 1.0f, 0.0f) ;
+
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 }
@@ -277,14 +318,19 @@ void render(int color_mode){
     
     
     if(is_forward_pressed){
-        acceleration_rate = 1.0f;
+        acceleration_rate = 2.0f;
         speed = acceleration_rate * 0.01;
         car_speed += speed ;
+        deltacp = speed*102;
         cout << "speed: " << speed << endl ;
         if(is_left_pressed){
             theta += 0.003 ;
+            deltath = 1;
         }else if(is_right_pressed){
             theta -= 0.003 ;
+            deltath = -1;
+        }else{
+            deltath = 0.0;
         }
         
         if(is_booster_pressed == true){
@@ -300,40 +346,57 @@ void render(int color_mode){
             else{
                 accel += 0.02f;
             }
-            cnt ++;
+            cnt += 3;
             car_speed += 0.01f * accel;
+            deltacp = speed*102;
         }
 
         
     }else if(is_back_pressed){
         car_speed -= 0.01 ;
-        
+        deltacp = -0.01;
         if(is_left_pressed){
             theta -= 0.003 ;
+            deltath = -0.003;
         }else if(is_right_pressed){
             theta += 0.003 ;
+            deltath = 0.003;
+        }else{
+            deltath = 0.0;
         }
     }else{
         if(acceleration_rate > 0){
-            cout << "acceleration_rate: " << acceleration_rate << endl ;
+//                cout << "acceleration_rate: " << acceleration_rate << endl ;
             acceleration_rate -= 0.01;
             if(acceleration_rate<0){
                 acceleration_rate = 0.0f;
             }
             speed = acceleration_rate * 0.001;
             car_speed += speed ;
+            deltacp = speed * 102;
             cout << "speed: " << speed << endl ;
+        }else{
+            deltacp = 0.0f;
         }
+        deltath = 0.0;
     }
     
+//eye : camera pos, center : a target position, up: up vector
     
-    
-    
-    //    if(isSportsCar){
-    //        glUniform1i(UVAR("isSportsCar"), 1);
-    //    }else{
-    //        glUniform1i(UVAR("isSportsCar"), 0);
-    //    }
+    if(car_speed!=0.0f){
+        /* my code */
+//        vec3 disp_vec(camera.center - vec3(0.0f, 0.0f, -1.0f));
+//        vec3(-1.0f, 0.2f, -1.0f)
+        
+        
+        vec3 normalized_vec = (camera.center + vec3(0.0f, 0.0f, 1.0f)) - camera.center ;
+        normalized_vec = normalize(normalized_vec) ;
+        camera.eye = camera.center + normalized_vec * cam_mag ;
+        camera.eye += vec3(0.0f, 0.8f, 0.0f) ;
+        V = camera.get_viewing() ;
+        
+    }
+
 
     if(is_obj_valid){
         for(int i=0; i<NUM_OF_MODELS; ++i){
@@ -342,38 +405,61 @@ void render(int color_mode){
             location = glGetUniformLocation(program, "M");
             mat4 M(1.0f);
             
-            M = scale(M, vec3(0.5f));
-            M = rotate(M, 1.0f, vec3(0.f, 1.f, 0.f));
-            M = rotate(M, 0.35f, vec3(1.f, 0.f, 1.f));
-            //M = rotate(M, , vec3(0.f, 1.f, 0.f));
-            M = translate(M, vec3(0.0f, -0.4f, 0.0f));
-            M = translate(M, vec3(0.0f, 0.55f, 0.0f));
+//            M = scale(M, vec3(0.5f));
+//            M = rotate(M, 1.0f, vec3(0.f, 1.f, 0.f));
+//            M = rotate(M, 0.35f, vec3(1.f, 0.f, 1.f));
+//            M = translate(M, vec3(0.0f, -0.4f, 0.0f));
+//            M = translate(M, vec3(0.0f, 0.55f, 0.0f));
             if(i == PATRICK){ // Patrick
                 glUniform1i(UVAR("isSportsCar"), 0);
                 
+//                M = rotate(M, -4.104016f, vec3(0.f, 1.f, 0.f)) ;
+//                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+//                M = translate(M, vec3(0.0f , 0.0f, -6.958642f + car_speed)) ;
+//                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+                M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
                 M = translate(M, vec3(0.15f, 0.2f, 0.35f)) ;// move patrick to the car sit
+                
                 
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
             }else if(i == CAR){ // Car
                 glUniform1i(UVAR("isSportsCar"), 1);
                 
+                
+                M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
                 
+                
+//                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+//                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
+               
+                
+                // Track the car's coordinates
+                vec4 pos = vec4(1.0f, 0.0f, 1.0f, 1.0f) ;
+                pos = M * pos ; // apply transformation matrix to pos
+                car_pos = vec3(pos.x, pos.y, pos.z) ;
+                camera.center = car_pos ;
+                
+                
+        
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+                
             }else if(i == CITY){ // City
                 glUniform1i(UVAR("isSportsCar"), 0);
 
                 //M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 //M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
-                M = translate(M, vec3(0.0f, 0.0f, -34.5f)) ;
-                M = translate(M, vec3(-12.0f, 0.0f, 0.0f)) ;
+                M = rotate(M, 183.0f, vec3(0.f, 1.f, 0.f)) ;
+                M = translate(M, vec3(-8.0f, 0.0f, -37.0f)) ;//주석
+                
+//                M = translate(M, vec3(-12.0f, 0.0f, 0.0f)) ;
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
             }else if(i == WALL){ // wall
-                glUniform1i(UVAR("isSportsCar"), 0);
-                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+//                glUniform1i(UVAR("isSportsCar"), 0);
+//                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
             }
             
             draw_obj_model(i, color_mode, i+1);
@@ -480,7 +566,54 @@ void draw_obj_model(int model_idx, int color_mode, int object_code){
     
 }
 
+double dsElapsedTime(){
+    static double prev = 0.0;
+    double curr = clock() / 1000.0;
+    if(!prev) prev = curr;
+    double retval = curr - prev;
+    prev = curr;
+    if(retval > 1.0) retval = 1.0;
+    if(retval < dEpsilon) retval = dEpsilon;
+    return retval;
+}
 
+
+glm :: mat4 compute_modelling_transf(dBodyID body){
+    using namespace glm;
+    mat4 M(1.0f);
+
+    const dReal* pos = dBodyGetPosition(body);
+    const dReal* rot = dBodyGetRotation(body);
+
+    M[3] = vec4(pos[0], pos[1], pos[2], 1.0f);
+    for(int i=0; i<3; ++i){
+        for(int j=0; j<3; ++j){
+            M[i][j] = rot[j*4+i];
+        }
+    }
+
+    return M;
+}
+
+static void nearCallback(void *data, dGeomID o1, dGeomID o2){
+    const int N = 100;
+    dContact contact[N];
+    int n = dCollide(o1, o2, N, &(contact[0].geom), sizeof(dContact));
+    if(n>0){
+        for(int i=0; i<n; i++){
+            contact[i].surface.mode = dContactSoftERP | dContactSoftCFM;
+            contact[i].surface.mu = 0.8;
+            contact[i].surface.soft_erp = 0.9;
+            contact[i].surface.soft_cfm = 0.01;
+            
+            dJointID c = dJointCreateContact(ode_world, ode_contactgroup, &contact[i]);
+            dBodyID body1 = dGeomGetBody(contact[i].geom.g1);
+            dBodyID body2 = dGeomGetBody(contact[i].geom.g2);
+            
+            dJointAttach(c, body1, body2);
+        }
+    }
+}
 
 void display(){
     render(0);
