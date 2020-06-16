@@ -478,6 +478,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.1.0_1/lib,
 					/usr/local/Cellar/bullet/2.89/lib,
+					/usr/local/Cellar/ode/0.16.1/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -502,6 +503,7 @@
 					"$(inherited)",
 					/usr/local/Cellar/glew/2.1.0_1/lib,
 					/usr/local/Cellar/bullet/2.89/lib,
+					/usr/local/Cellar/ode/0.16.1/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_NAME = "$(TARGET_NAME)";
