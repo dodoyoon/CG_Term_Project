@@ -13,9 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/sungminkim/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -25,7 +25,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -55,16 +55,16 @@ GLfloat acceleration_rate = 0.0f ;
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
     
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
 };
 
 float model_scales[NUM_OF_MODELS] = {1.0f, 0.3f, 100.0f}; //car : 1.0 patric 0.3 city 50.0
@@ -214,11 +214,21 @@ int main(int argc, char** argv) {
     glutMainLoop();
 }
 
+void Manual(){
+    printf("UP KEY    : straight\n");
+    printf("DOWN KEY  : back\n");
+    printf("RIGHT KEY : turn right\n");
+    printf("LEFT KEY  : turn left\n");
+    printf("1         : gouraud shading\n");
+    printf("2         : phong shading\n");
+    printf("z KEY     : booster\n");
+    
+}
+
 void init(){
-    printf("choose the shading_mode \n (1): gouraud_shading (2): phong_shading\n");
     printf("choose the car \n (1) red (2) yellow (3) ghost\n");
-    printf("Your input: ") ;
     scanf("%d", &car_num);
+    Manual();
     
     program = build_program();
      
@@ -227,11 +237,11 @@ void init(){
         if(k==CAR){
             /* "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", */
             if(car_num==1){
-                is_obj_valid = load_obj("/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else if(car_num==2){
-                is_obj_valid = load_obj("/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else if(car_num==3){
-                is_obj_valid = load_obj("/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A1.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A1.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else{
                 cout << "car num error \n " << endl;
             }
@@ -255,12 +265,14 @@ void init(){
             colors[k][i] = 1.0f;
         }
 
+        printf("Loading %zu...\n", k);
         glGenVertexArrays(1, &vao[k]);
         glBindVertexArray(vao[k]);
         glGenBuffers(3, vbo[k]);
         bind_buffer(vbo[k][0], vertices[k], program, "vPosition", 3);
         bind_buffer(vbo[k][1], normals[k], program, "vNormal", 3);
         bind_buffer(vbo[k][2], texcoords[k], program, "vTexcoord", 2);
+        printf("END!!\n");
         
         start_time = time(NULL);
         
@@ -322,10 +334,12 @@ void render(int color_mode){
         acceleration_rate = 2.0f;
         speed = acceleration_rate * 0.01;
         car_speed += speed ;
+//        cout << "speed: " << speed << endl ;
 
         
         if(is_booster_pressed == true){
             int time = 2000;
+//            cout << "cnt : "<<cnt<<'\n';
             if(cnt > time){
                 is_booster_pressed = false;
                 accel = 1.0f;
@@ -358,6 +372,7 @@ void render(int color_mode){
             }
             speed = acceleration_rate * 0.001;
             car_speed += speed ;
+//            cout << "speed: " << speed << endl ;
         }
     }
     
@@ -397,7 +412,14 @@ void render(int color_mode){
                 M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 M = translate(M, vec3(0.f,0.f,car_speed)) ;
-
+                
+//                for(int x=0; x<4; x++){
+//                    for(int y=0; y<4; y++){
+//                        cout << M[y][x]<<' ';
+//                    }
+//                    cout << '\n';
+//                }
+//                cout << '\n';
                 
                 for(int x=0; x<3; x++){
                     for(int y=0; y<3; y++){
@@ -407,8 +429,11 @@ void render(int color_mode){
                         else{
                             world_coord[y][x] = M[y][x]/M[3][x];
                         }
+//                        cout <<world_coord[y][x]<<" ";
                     }
+//                    cout << '\n';
                 }
+//                cout << '\n';
                 
                 if(world_coord[0][0]<0.003 && world_coord[0][0]>0.002 &&
                    world_coord[2][0]<0.03 && world_coord[2][0]>0.01 &&
@@ -449,25 +474,25 @@ void render(int color_mode){
 /* event handling functions */
 void special_key(int key, int x, int y){
     if(key == GLUT_KEY_LEFT){
+//        cout << "<--" << endl ;
         is_left_pressed = true ;
     }
     
     if(key == GLUT_KEY_RIGHT){
+//        cout << "-->" << endl ;
         is_right_pressed = true ;
     }
     
     if(key == GLUT_KEY_UP){
+//        cout << "FORWARD" << endl ;
         is_forward_pressed = true ;
     }
     
     if(key == GLUT_KEY_DOWN){
+//        cout << "BACK" << endl ;
         is_back_pressed = true ;
     }
-    
-    if(key == GLUT_KEY_HOME){
-        is_booster_pressed = true ;
-        cnt = 0;
-    }
+
 }
 
 void special_up(int key, int x, int y){
@@ -545,6 +570,19 @@ void display(){
         finish_time = time(NULL);
         double result = (double) (finish_time - start_time);
         cout << "Your score : " <<  200 - result<<'\n';
+        if(result < 40){
+            printf("SUPER CAR\n");
+        }
+        else if(result < 80){
+            printf("GOOD CAR\n");
+        }
+        else if(result < 120){
+            printf("POOR CAR\n");
+        }
+        else{
+            printf("TOO SlOW!\n");
+        }
+        return;
     }
 //    glutSwapBuffers();
 }
@@ -569,8 +607,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
@@ -584,6 +622,11 @@ void mouse (int button, int state, int x, int y){
         unsigned char res[4] ;
         int height = glutGet(GLUT_WINDOW_HEIGHT) ;
         glReadPixels(x, height-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res) ;
+        
+//        switch(res[0]){
+//            case 1: printf("The earth is clicked!\n"); break ;
+//            case 2: printf("The moon is clicked\n"); break ;
+//        }
     }
     
     button_pressed[button] = state ;
@@ -746,6 +789,18 @@ void keyboard(unsigned char key, int x, int y){
             printf("phong shading\n");
             glutPostRedisplay();
             break;
+        case 'z':
+            is_booster_pressed = true ;
+            cnt = 0;
+            break;
+//        case 32:
+//            car_speed = 0 ;
+//            theta = 0 ;
+//            is_back_pressed = false ;
+//            is_forward_pressed = false ;
+//            is_right_pressed = false ;
+//            is_left_pressed = false ;
+//            break ;
     }
 }
 
