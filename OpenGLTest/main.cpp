@@ -13,13 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/seungbin/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
-#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
-#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
-
-#include "/usr/local/Cellar/ode/0.16.1/include/ode/ode.h"
-#include "/usr/local/Cellar/ode/0.16.1/include/ode/common.h"
-
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/GLUT.framework/Headers/glut.h"
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/LoadShaders.h"
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/loadobj.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -29,7 +25,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
+#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -60,15 +56,15 @@ GLfloat acceleration_rate = 0.0f ;
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj"
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/serpentine city.obj"
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/",
+    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/",
 };
 
 float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f}; //{0.5f, 1.0f, 50.0f};
@@ -107,27 +103,7 @@ bool is_left_pressed = false ;
 bool is_right_pressed = false ;
 bool is_booster_pressed = false ;
 int cnt = 0 ;
-
-#ifdef dSINGLE
-#define dEpsilon FLT_EPSILON
-#else
-#define dEpsilon DBL_EPSILON
-#endif
-
-static dWorldID ode_world;
-static dSpaceID ode_space;
-static dJointGroupID ode_contactgroup;
-static bool pause = true;
-
-static dGeomID ode_plane_geom;
-
-static dBodyID ode_sphere_body;
-static dGeomID ode_sphere_geom;
-
-static dBodyID ode_trimesh_body;
-static dGeomID ode_trimesh_geom;
-static dTriMeshDataID ode_trimesh_data;
-static std::vector<dTriIndex> ode_trimesh_index;
+int car_num = 0;
 
 int button_pressed[3] = {GLUT_UP, GLUT_UP, GLUT_UP};
 int mouse_pos[2] = {0, 0};
@@ -238,12 +214,27 @@ int main(int argc, char** argv) {
 
 void init(){
     printf("choose the shading_mode \n (1): gouraud_shading (2): phong_shading\n");
+    printf("choose the car \n (1) red (2) yellow (3) ghost\n");
+    scanf("%d", &car_num);
     
     program = build_program();
      
     for(size_t k = 0; k<NUM_OF_MODELS; ++k){
         attrib_t attrib;
+        if(k==CAR){
+            /* "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", */
+            if(car_num==1){
+                is_obj_valid = load_obj("/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+            }else if(car_num==2){
+                is_obj_valid = load_obj("/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+            }else if(car_num==3){
+                is_obj_valid = load_obj("/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A1.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+            }else{
+                cout << "car num error \n " << endl;
+            }
+        }else{
         is_obj_valid = load_obj(model_files[k], basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+        }
 
         glActiveTexture(GL_TEXTURE0);
         is_tex_valid = load_tex(basedir[k], texcoords[k], texmap[k], attrib.texcoords, shapes[k], materials[k], GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
@@ -567,55 +558,6 @@ void draw_obj_model(int model_idx, int color_mode, int object_code){
     
 }
 
-double dsElapsedTime(){
-    static double prev = 0.0;
-    double curr = clock() / 1000.0;
-    if(!prev) prev = curr;
-    double retval = curr - prev;
-    prev = curr;
-    if(retval > 1.0) retval = 1.0;
-    if(retval < dEpsilon) retval = dEpsilon;
-    return retval;
-}
-
-
-glm :: mat4 compute_modelling_transf(dBodyID body){
-    using namespace glm;
-    mat4 M(1.0f);
-
-    const dReal* pos = dBodyGetPosition(body);
-    const dReal* rot = dBodyGetRotation(body);
-
-    M[3] = vec4(pos[0], pos[1], pos[2], 1.0f);
-    for(int i=0; i<3; ++i){
-        for(int j=0; j<3; ++j){
-            M[i][j] = rot[j*4+i];
-        }
-    }
-
-    return M;
-}
-
-static void nearCallback(void *data, dGeomID o1, dGeomID o2){
-    const int N = 100;
-    dContact contact[N];
-    int n = dCollide(o1, o2, N, &(contact[0].geom), sizeof(dContact));
-    if(n>0){
-        for(int i=0; i<n; i++){
-            contact[i].surface.mode = dContactSoftERP | dContactSoftCFM;
-            contact[i].surface.mu = 0.8;
-            contact[i].surface.soft_erp = 0.9;
-            contact[i].surface.soft_cfm = 0.01;
-            
-            dJointID c = dJointCreateContact(ode_world, ode_contactgroup, &contact[i]);
-            dBodyID body1 = dGeomGetBody(contact[i].geom.g1);
-            dBodyID body2 = dGeomGetBody(contact[i].geom.g2);
-            
-            dJointAttach(c, body1, body2);
-        }
-    }
-}
-
 void display(){
     render(0);
     
@@ -644,8 +586,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
