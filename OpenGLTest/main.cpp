@@ -217,6 +217,7 @@ int main(int argc, char** argv) {
 void init(){
     printf("choose the shading_mode \n (1): gouraud_shading (2): phong_shading\n");
     printf("choose the car \n (1) red (2) yellow (3) ghost\n");
+    printf("Your input: ") ;
     scanf("%d", &car_num);
     
     program = build_program();
@@ -583,11 +584,6 @@ void mouse (int button, int state, int x, int y){
         unsigned char res[4] ;
         int height = glutGet(GLUT_WINDOW_HEIGHT) ;
         glReadPixels(x, height-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res) ;
-        
-//        switch(res[0]){
-//            case 1: printf("The earth is clicked!\n"); break ;
-//            case 2: printf("The moon is clicked\n"); break ;
-//        }
     }
     
     button_pressed[button] = state ;
@@ -750,14 +746,6 @@ void keyboard(unsigned char key, int x, int y){
             printf("phong shading\n");
             glutPostRedisplay();
             break;
-//        case 32:
-//            car_speed = 0 ;
-//            theta = 0 ;
-//            is_back_pressed = false ;
-//            is_forward_pressed = false ;
-//            is_right_pressed = false ;
-//            is_left_pressed = false ;
-//            break ;
     }
 }
 
