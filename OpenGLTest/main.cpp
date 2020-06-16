@@ -13,9 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/GLUT.framework/Headers/glut.h"
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/LoadShaders.h"
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/loadobj.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -25,7 +25,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/stb_image.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -38,12 +38,10 @@
      (flag) == GL_NEAREST_MIPMAP_NEAREST)
 
 
-#define NUM_OF_MODELS 3
-#define WALL 3
-#define CITY 2
-#define PATRICK 0
-#define CAR 1
+enum {CAR, PATRICK, CITY, NUM_OF_MODELS};
+enum {R, G, B};
 
+time_t start_time, finish_time;
 typedef std::vector<GLfloat> GLvec;
 using namespace glm;
 using namespace std;
@@ -52,22 +50,24 @@ using namespace tinyobj;
 GLuint program;
 int shading_mode = 1;
 bool isSportsCar = true ; // 나중에 바꿔줘
+bool is_End = false;
 GLfloat acceleration_rate = 0.0f ;
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/serpentine city.obj"
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
+    
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Patrick/",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/",
-    "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/City/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
 };
 
-float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f}; //{0.5f, 1.0f, 50.0f};
+float model_scales[NUM_OF_MODELS] = {1.0f, 0.3f, 100.0f}; //car : 1.0 patric 0.3 city 50.0
 
 vector<real_t> vertices[NUM_OF_MODELS];
 vector<real_t> normals[NUM_OF_MODELS];
@@ -81,17 +81,19 @@ map<string, size_t> texmap[NUM_OF_MODELS];
 
 GLuint vao[NUM_OF_MODELS];
 GLuint vbo[NUM_OF_MODELS][4];
+mat3 world_coord(1.0f);
 
 bool is_obj_valid = false;
 bool is_tex_valid = false;
 
 // Direction Key offset for the object
 GLfloat car_speed = 0.0f ;
+GLfloat pre_car_speed = 0.0f ;
 GLfloat theta = 0.0f ;
 GLfloat accel = 1.0f;
-GLfloat deltacp = 0.0f;
-GLfloat deltath = 0.0f;
-GLfloat deltay = 0.0f;
+//GLfloat deltacp = 0.0f;
+//GLfloat deltath = 0.0f;
+//GLfloat deltay = 0.0f;
 
 // Track the car position
 vec3 car_pos(1.0f) ;
@@ -224,11 +226,11 @@ void init(){
         if(k==CAR){
             /* "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", */
             if(car_num==1){
-                is_obj_valid = load_obj("/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else if(car_num==2){
-                is_obj_valid = load_obj("/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else if(car_num==3){
-                is_obj_valid = load_obj("/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A1.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A1.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else{
                 cout << "car num error \n " << endl;
             }
@@ -260,6 +262,9 @@ void init(){
         bind_buffer(vbo[k][1], normals[k], program, "vNormal", 3);
         bind_buffer(vbo[k][2], texcoords[k], program, "vTexcoord", 2);
         printf("END!!\n");
+        
+        start_time = time(NULL);
+        
     }
     
     
@@ -268,7 +273,7 @@ void init(){
     normalized_vec = normalize(normalized_vec) ;
     
     camera.eye = camera.center + normalized_vec * cam_mag ;
-    camera.eye += vec3(0.0f, 1.0f, 0.0f) ;
+    camera.eye += vec3(0.0f, 1.0f, 8.0f) ;
 
 
     glEnable(GL_DEPTH_TEST);
@@ -295,7 +300,9 @@ void render(int color_mode){
     mat4 V = camera.get_viewing();
     mat4 T(1.0f);
     mat4 P = camera.get_projection(aspect);
-
+    
+//    mat4 Car_M(1.0f);
+    
     location = glGetUniformLocation(program, "V");
     glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(V));
     location = glGetUniformLocation(program, "P");
@@ -308,22 +315,29 @@ void render(int color_mode){
     GLfloat speed = 0.0f ;
 //    GLfloat acceleration_rate = 1.0f ;
     
+    if(is_left_pressed){
+       theta += 0.003 ;
+//       deltath = 1;
+    }else if(is_right_pressed){
+       theta -= 0.003 ;
+//       deltath = -1;
+   }
     
     if(is_forward_pressed){
         acceleration_rate = 2.0f;
         speed = acceleration_rate * 0.01;
         car_speed += speed ;
-        deltacp = speed*102;
+//        deltacp = speed*102;
         cout << "speed: " << speed << endl ;
-        if(is_left_pressed){
-            theta += 0.003 ;
-            deltath = 1;
-        }else if(is_right_pressed){
-            theta -= 0.003 ;
-            deltath = -1;
-        }else{
-            deltath = 0.0;
-        }
+//        if(is_left_pressed){
+//            theta += 0.003 ;
+//            deltath = 1;
+//        }else if(is_right_pressed){
+//            theta -= 0.003 ;
+//            deltath = -1;
+//        }else{
+//            deltath = 0.0;
+//        }
         
         if(is_booster_pressed == true){
             int time = 2000;
@@ -340,23 +354,25 @@ void render(int color_mode){
             }
             cnt += 3;
             car_speed += 0.01f * accel;
-            deltacp = speed*102;
+//            deltacp = speed*102;
         }
 
         
-    }else if(is_back_pressed){
+    }
+    else if(is_back_pressed){
         car_speed -= 0.01 ;
-        deltacp = -0.01;
+//        deltacp = -0.01;
         if(is_left_pressed){
             theta -= 0.003 ;
-            deltath = -0.003;
+//            deltath = -0.003;
         }else if(is_right_pressed){
             theta += 0.003 ;
-            deltath = 0.003;
+//            deltath = 0.003;
         }else{
-            deltath = 0.0;
+//            deltath = 0.0;
         }
-    }else{
+    }
+    else{
         if(acceleration_rate > 0){
 //                cout << "acceleration_rate: " << acceleration_rate << endl ;
             acceleration_rate -= 0.01;
@@ -365,12 +381,13 @@ void render(int color_mode){
             }
             speed = acceleration_rate * 0.001;
             car_speed += speed ;
-            deltacp = speed * 102;
+//            deltacp = speed * 102;
             cout << "speed: " << speed << endl ;
-        }else{
-            deltacp = 0.0f;
         }
-        deltath = 0.0;
+//        else{
+//            deltacp = 0.0f;
+//        }
+//        deltath = 0.0;
     }
     
 //eye : camera pos, center : a target position, up: up vector
@@ -384,7 +401,7 @@ void render(int color_mode){
         vec3 normalized_vec = (camera.center + vec3(0.0f, 0.0f, 1.0f)) - camera.center ;
         normalized_vec = normalize(normalized_vec) ;
         camera.eye = camera.center + normalized_vec * cam_mag ;
-        camera.eye += vec3(0.0f, 0.8f, 0.0f) ;
+        camera.eye += vec3(0.0f, 15.8f, 0.0f) ;
         V = camera.get_viewing() ;
         
     }
@@ -409,25 +426,61 @@ void render(int color_mode){
 //                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
 //                M = translate(M, vec3(0.0f , 0.0f, -6.958642f + car_speed)) ;
 //                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+//                M = translate(M, vec3(0.0f , 0.0f, -car_speed)) ;
                 M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
+//                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
                 M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
                 M = translate(M, vec3(0.15f, 0.2f, 0.35f)) ;// move patrick to the car sit
                 
+                if(is_forward_pressed){
+                    M = rotate(M, -0.90f, vec3(1.f, 0.f, 0.f));
+                }else if(is_back_pressed){
+                    M = rotate(M, 0.45f, vec3(1.f, 0.f, 0.f));
+                }
                 
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
             }else if(i == CAR){ // Car
                 glUniform1i(UVAR("isSportsCar"), 1);
-                
-                
                 M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
-                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
+                M = translate(M, vec3(0.f,0.f,car_speed)) ;
+//                }
+//                else if(is_forward_pressed){
+//                    M = translate(M, car_speed *normalize(vec3(Car_M[2]))) ;
+//                }
                 
+//                Car_M = Car_M * M;
+                for(int x=0; x<4; x++){
+                    for(int y=0; y<4; y++){
+                        cout << M[y][x]<<' ';
+                    }
+                    cout << '\n';
+                }
+                cout << '\n';
                 
-//                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
-//                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
-               
+                for(int x=0; x<3; x++){
+                    for(int y=0; y<3; y++){
+//                            cout <<"M[3][x] : "<<M[3][x] <<'\n';
+                        if(M[3][x] == 0){
+                            world_coord[y][x]  = 0;
+                        }
+                        else{
+                            world_coord[y][x] = M[y][x]/M[3][x];
+                        }
+                        cout <<world_coord[y][x]<<" ";
+                    }
+                    cout << '\n';
+                }
+                cout << '\n';
+                
+                if(world_coord[0][0]<0.003 && world_coord[0][0]>0.002 &&
+                   world_coord[2][0]<0.03 && world_coord[2][0]>0.01 &&
+                   world_coord[0][2]<-0.04 && world_coord[0][2]>-0.06){
+                    is_End = true;
+                    printf("**END***\n");
+                    
+                }
                 
                 // Track the car's coordinates
                 vec4 pos = vec4(1.0f, 0.0f, 1.0f, 1.0f) ;
@@ -436,7 +489,8 @@ void render(int color_mode){
                 camera.center = car_pos ;
                 
                 
-        
+                
+                pre_car_speed = car_speed;
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
                 
             }else if(i == CITY){ // City
@@ -445,14 +499,15 @@ void render(int color_mode){
                 //M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 //M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
                 M = rotate(M, 183.0f, vec3(0.f, 1.f, 0.f)) ;
-                M = translate(M, vec3(-8.0f, 0.0f, -37.0f)) ;//주석
+                M = translate(M, vec3(-16.0f, 0.0f, -76.0f)) ;//주석
                 
 //                M = translate(M, vec3(-12.0f, 0.0f, 0.0f)) ;
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
-            }else if(i == WALL){ // wall
+            }
+//            else if(i == WALL){ // wall
 //                glUniform1i(UVAR("isSportsCar"), 0);
 //                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
-            }
+//            }
             
             draw_obj_model(i, color_mode, i+1);
         }
@@ -559,10 +614,17 @@ void draw_obj_model(int model_idx, int color_mode, int object_code){
 }
 
 void display(){
-    render(0);
-    
-    glFlush();
-    glutPostRedisplay();
+    if(is_End == false){
+        render(0);
+        glFlush();
+        glutPostRedisplay();
+    }
+    else{
+        finish_time = time(NULL);
+        double result = (double) (finish_time - start_time);
+        cout << "Your score : " <<  200 - result<<'\n';
+//        return 0;
+    }
 //    glutSwapBuffers();
 }
 
@@ -586,8 +648,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
