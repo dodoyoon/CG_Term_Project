@@ -13,9 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/sungminkim/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
 
 #include "/usr/local/Cellar/ode/0.16.1/include/ode/ode.h"
 #include "/usr/local/Cellar/ode/0.16.1/include/ode/common.h"
@@ -29,7 +29,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
+#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -54,21 +54,21 @@ using namespace std;
 using namespace tinyobj;
 
 GLuint program;
-int shading_mode = 0;
+int shading_mode = 1;
 bool isSportsCar = true ; // 나중에 바꿔줘
 GLfloat acceleration_rate = 0.0f ;
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj"
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj"
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
-    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
+    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
 };
 
 float model_scales[NUM_OF_MODELS] = {0.3f, 1.0f, 50.0f}; //{0.5f, 1.0f, 50.0f};
@@ -237,6 +237,7 @@ int main(int argc, char** argv) {
 }
 
 void init(){
+    printf("choose the shading_mode \n (1): gouraud_shading (2): phong_shading\n");
     
     program = build_program();
      
@@ -299,7 +300,7 @@ void render(int color_mode){
     double aspect = 1.0 * width/height;
 
     mode_location = glGetUniformLocation(program, "mode");
-    glUniform1i(mode_location, 2);
+    glUniform1i(mode_location, shading_mode);
     mat4 V = camera.get_viewing();
     mat4 T(1.0f);
     mat4 P = camera.get_projection(aspect);
@@ -643,8 +644,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
@@ -815,14 +816,24 @@ bool load_tex(const char* basedir, vector<real_t>& texcoords_out, map<string, si
 
 void keyboard(unsigned char key, int x, int y){
     switch(key){
-        case 32:
-            car_speed = 0 ;
-            theta = 0 ;
-            is_back_pressed = false ;
-            is_forward_pressed = false ;
-            is_right_pressed = false ;
-            is_left_pressed = false ;
-            break ;
+        case '1':
+            shading_mode = 1;
+            printf("gouraud shading\n");
+            glutPostRedisplay();
+            break;
+        case '2':
+            shading_mode = 2;
+            printf("phong shading\n");
+            glutPostRedisplay();
+            break;
+//        case 32:
+//            car_speed = 0 ;
+//            theta = 0 ;
+//            is_back_pressed = false ;
+//            is_forward_pressed = false ;
+//            is_right_pressed = false ;
+//            is_left_pressed = false ;
+//            break ;
     }
 }
 

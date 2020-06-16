@@ -68,7 +68,8 @@ void gouraud_shading() //for gouraud shading
         else
             FragColor = fColorBack;
         
-        FragColor *= texture(sampler, fTexcoord);
+        if(isSportsCar == 0)
+            FragColor *= texture(sampler, fTexcoord);
     }
 }
 
