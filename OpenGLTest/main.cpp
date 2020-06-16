@@ -324,18 +324,17 @@ void render(int color_mode){
     
     GLfloat speed = 0.0f ;
     
-    if(is_left_pressed){
-       theta += 0.003 ;
-    }else if(is_right_pressed){
-       theta -= 0.003 ;
-   }
-    
     if(is_forward_pressed){
         acceleration_rate = 2.0f;
         speed = acceleration_rate * 0.01;
         car_speed += speed ;
 //        cout << "speed: " << speed << endl ;
 
+        if(is_left_pressed){
+            theta += 0.003 ;
+         }else if(is_right_pressed){
+            theta -= 0.003 ;
+        }
         
         if(is_booster_pressed == true){
             int time = 2000;
