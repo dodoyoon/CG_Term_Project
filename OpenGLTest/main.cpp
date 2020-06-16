@@ -254,14 +254,12 @@ void init(){
             colors[k][i] = 1.0f;
         }
 
-        printf("Loading %zu...\n", k);
         glGenVertexArrays(1, &vao[k]);
         glBindVertexArray(vao[k]);
         glGenBuffers(3, vbo[k]);
         bind_buffer(vbo[k][0], vertices[k], program, "vPosition", 3);
         bind_buffer(vbo[k][1], normals[k], program, "vNormal", 3);
         bind_buffer(vbo[k][2], texcoords[k], program, "vTexcoord", 2);
-        printf("END!!\n");
         
         start_time = time(NULL);
         
@@ -323,12 +321,10 @@ void render(int color_mode){
         acceleration_rate = 2.0f;
         speed = acceleration_rate * 0.01;
         car_speed += speed ;
-        cout << "speed: " << speed << endl ;
 
         
         if(is_booster_pressed == true){
             int time = 2000;
-            cout << "cnt : "<<cnt<<'\n';
             if(cnt > time){
                 is_booster_pressed = false;
                 accel = 1.0f;
@@ -361,7 +357,6 @@ void render(int color_mode){
             }
             speed = acceleration_rate * 0.001;
             car_speed += speed ;
-            cout << "speed: " << speed << endl ;
         }
     }
     
@@ -401,14 +396,7 @@ void render(int color_mode){
                 M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
                 M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 M = translate(M, vec3(0.f,0.f,car_speed)) ;
-                
-                for(int x=0; x<4; x++){
-                    for(int y=0; y<4; y++){
-                        cout << M[y][x]<<' ';
-                    }
-                    cout << '\n';
-                }
-                cout << '\n';
+
                 
                 for(int x=0; x<3; x++){
                     for(int y=0; y<3; y++){
@@ -418,11 +406,8 @@ void render(int color_mode){
                         else{
                             world_coord[y][x] = M[y][x]/M[3][x];
                         }
-                        cout <<world_coord[y][x]<<" ";
                     }
-                    cout << '\n';
                 }
-                cout << '\n';
                 
                 if(world_coord[0][0]<0.003 && world_coord[0][0]>0.002 &&
                    world_coord[2][0]<0.03 && world_coord[2][0]>0.01 &&
@@ -463,27 +448,22 @@ void render(int color_mode){
 /* event handling functions */
 void special_key(int key, int x, int y){
     if(key == GLUT_KEY_LEFT){
-        cout << "<--" << endl ;
         is_left_pressed = true ;
     }
     
     if(key == GLUT_KEY_RIGHT){
-        cout << "-->" << endl ;
         is_right_pressed = true ;
     }
     
     if(key == GLUT_KEY_UP){
-        cout << "FORWARD" << endl ;
         is_forward_pressed = true ;
     }
     
     if(key == GLUT_KEY_DOWN){
-        cout << "BACK" << endl ;
         is_back_pressed = true ;
     }
     
     if(key == GLUT_KEY_HOME){
-        cout << "HOME" << "\n";
         is_booster_pressed = true ;
         cnt = 0;
     }
