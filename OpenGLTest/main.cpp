@@ -334,7 +334,7 @@ void render(int color_mode){
             int time = 2000;
             if(cnt > time){
                 is_booster_pressed = false;
-                accel = 1.0f;
+                accel = 2.0f;
             }
             else if(cnt > time/2){
                 accel -= 0.02f;
