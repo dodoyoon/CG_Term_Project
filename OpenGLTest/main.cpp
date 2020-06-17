@@ -13,9 +13,9 @@
 #include <cstdlib>
 #include <stdbool.h>
 #include <GL/glew.h>
-#include "/Users/seungbin/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
-#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
-#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/GLUT.framework/Headers/glut.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/LoadShaders.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/loadobj.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -25,7 +25,7 @@
 #include <time.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
+#include "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/stb_image.h"
 
 #define UVAR(name) glGetUniformLocation(program, name)
 #define MAP_FIND(map_obj, item)\
@@ -40,6 +40,7 @@
 
 enum {CAR, PATRICK, CITY, NUM_OF_MODELS};
 enum {R, G, B};
+enum {GOD_CAM, MY_CAM} ;
 
 time_t start_time, finish_time;
 typedef std::vector<GLfloat> GLvec;
@@ -58,16 +59,16 @@ mat4 Player_M(1.0f);
 
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/Patrick.obj",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/serpentine city.obj",
     
 };
 
 const char* basedir [NUM_OF_MODELS] = {
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
-    "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Patrick/",
+    "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/City/",
 };
 
 float model_scales[NUM_OF_MODELS] = {1.0f, 0.3f, 100.0f}; //car : 1.0 patric 0.3 city 50.0
@@ -190,7 +191,9 @@ struct Camera {
     }
 };
 
-Camera camera;
+
+int toggle_cam = MY_CAM ;
+Camera camera[2];
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -217,6 +220,7 @@ int main(int argc, char** argv) {
 }
 
 void Manual(){
+    printf("\n########## Key Info ##########\n") ;
     printf("UP KEY    : straight\n");
     printf("DOWN KEY  : back\n");
     printf("RIGHT KEY : turn right\n");
@@ -224,11 +228,12 @@ void Manual(){
     printf("1         : gouraud shading\n");
     printf("2         : phong shading\n");
     printf("z KEY     : booster\n");
-    
+    printf("c KEY     : toggle camera\n");
 }
 
 void init(){
     printf("choose the car \n (1) red (2) yellow (3) ghost\n");
+    printf("Your input: ");
     scanf("%d", &car_num);
     Manual();
     
@@ -239,11 +244,11 @@ void init(){
         if(k==CAR){
             /* "/Users/dodo4.0/Projects/OpenGL/CG_Term_Project/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", */
             if(car_num==1){
-                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else if(car_num==2){
-                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A2.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else if(car_num==3){
-                is_obj_valid = load_obj("/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A1.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
+                is_obj_valid = load_obj("/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_A1.obj", basedir[k], vertices[k], normals[k], vertex_map[k], material_map[k], attrib, shapes[k], materials[k], model_scales[k]) ;
             }else{
                 cout << "car num error \n " << endl;
             }
@@ -267,14 +272,14 @@ void init(){
             colors[k][i] = 1.0f;
         }
 
-        printf("Loading %zu...\n", k);
+//        printf("Loading %zu...\n", k);
         glGenVertexArrays(1, &vao[k]);
         glBindVertexArray(vao[k]);
         glGenBuffers(3, vbo[k]);
         bind_buffer(vbo[k][0], vertices[k], program, "vPosition", 3);
         bind_buffer(vbo[k][1], normals[k], program, "vNormal", 3);
         bind_buffer(vbo[k][2], texcoords[k], program, "vTexcoord", 2);
-        printf("END!!\n");
+//        printf("END!!\n");
         
         start_time = time(NULL);
         
@@ -282,11 +287,14 @@ void init(){
     
     
     /* Set the initial camera position */
-    vec3 normalized_vec = (camera.center + vec3(0.0f, 0.0f, 1.0f)) - camera.center ;
-    normalized_vec = normalize(normalized_vec) ;
+//    vec3 normalized_vec = (camera.center + vec3(0.0f, 0.0f, 1.0f)) - camera.center ;
+//    normalized_vec = normalize(normalized_vec) ;
     
-    camera.eye = camera.center + normalized_vec * cam_mag ;
-    camera.eye += vec3(0.0f, 1.0f, 8.0f) ;
+    camera[GOD_CAM].eye = camera[GOD_CAM].center + vec3(0.0f, 0.0f, 1.0f) ;
+    camera[GOD_CAM].eye += vec3(0.0f, 1.0f, 8.0f) ;
+    
+    camera[MY_CAM].eye = camera[MY_CAM].center + vec3(0.0f, 0.0f, 1.0f) ;
+    camera[MY_CAM].eye += vec3(0.0f, 1.0f, 8.0f) ;
 
 
     Car_M = rotate(Car_M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
@@ -315,9 +323,9 @@ void render(int color_mode){
 
     mode_location = glGetUniformLocation(program, "mode");
     glUniform1i(mode_location, shading_mode);
-    mat4 V = camera.get_viewing();
+    mat4 V = camera[toggle_cam].get_viewing();
     mat4 T(1.0f);
-    mat4 P = camera.get_projection(aspect);
+    mat4 P = camera[toggle_cam].get_projection(aspect);
     
     
     location = glGetUniformLocation(program, "V");
@@ -371,9 +379,7 @@ void render(int color_mode){
 //        }
     }
     else{
-        cout <<" acceleration_rate : "<<acceleration_rate<<'\n';
         if(acceleration_rate > 0){
-            cout << " pre_speed : "<<pre_speed <<'\n';
             if(pre_speed > 0){
                 acceleration_rate -= 0.01;
                 if(acceleration_rate<0){
@@ -389,7 +395,6 @@ void render(int color_mode){
                 speed = - acceleration_rate * 0.001;
             }
             car_speed += speed ;
-//            cout << "speed: " << speed << endl ;
         }
     }
     
@@ -397,11 +402,21 @@ void render(int color_mode){
     
     
     if(car_speed!=0.0f){
-        vec3 normalized_vec = (camera.center + vec3(0.0f, 0.0f, 1.0f)) - camera.center ;
+        vec3 normalized_vec = (camera[toggle_cam].center + vec3(4.0f, 0.0f, -5.0f)) - camera[toggle_cam].center ;
         normalized_vec = normalize(normalized_vec) ;
-        camera.eye = camera.center + normalized_vec * cam_mag ;
-        camera.eye += vec3(0.0f, 15.8f, 0.0f) ;
-        V = camera.get_viewing() ;
+        
+        camera[toggle_cam].center += vec3(0.0f, 0.0f, 5.0f) ;
+        camera[toggle_cam].eye = camera[toggle_cam].center + normalized_vec ;
+        
+        
+        if(toggle_cam == GOD_CAM)
+            camera[toggle_cam].eye += vec3(0.0f, 10.0f, 0.0f) ;
+        else{
+            camera[toggle_cam].eye += vec3(0.0f, 2.0f, 0.0f) ;
+        }
+            
+        
+        V = camera[toggle_cam].get_viewing() ;
     }
 
     if(is_obj_valid){
@@ -437,16 +452,8 @@ void render(int color_mode){
                 
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(Player_M));
                 
-//                for(int y=0; y<4; y++){
-//                    for(int x=0; x<4; x++){
-//                        R[y][x] = 1/R[y][x];
-//                    }
-//                }
-//                Player_M = Player_M  * R;
-                
             }else if(i == CAR){ // Car
                 glUniform1i(UVAR("isSportsCar"), 1);
-//                M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
                 if(is_left_pressed){
                     M = rotate(M, 0.01f, vec3(0.f, 1.f, 0.f)) ;
                 }
@@ -455,13 +462,6 @@ void render(int color_mode){
                 }
                 M = translate(M, vec3(0.f,0.f,speed)) ;
                 
-//                for(int x=0; x<4; x++){
-//                    for(int y=0; y<4; y++){
-//                        cout << M[y][x]<<' ';
-//                    }
-//                    cout << '\n';
-//                }
-//                cout << '\n';
                 
                 for(int x=0; x<3; x++){
                     for(int y=0; y<3; y++){
@@ -471,11 +471,8 @@ void render(int color_mode){
                         else{
                             world_coord[y][x] = M[y][x]/M[3][x];
                         }
-//                        cout <<world_coord[y][x]<<" ";
                     }
-//                    cout << '\n';
                 }
-//                cout << '\n';
                 
                 if(world_coord[0][0]<0.003 && world_coord[0][0]>0.002 &&
                    world_coord[2][0]<0.03 && world_coord[2][0]>0.01 &&
@@ -491,9 +488,7 @@ void render(int color_mode){
                 vec4 pos = vec4(1.0f, 0.0f, 1.0f, 1.0f) ;
                 pos = Car_M * pos ; // apply transformation matrix to pos
                 car_pos = vec3(pos.x, pos.y, pos.z) ;
-                camera.center = car_pos ;
-                
-                
+                camera[toggle_cam].center = car_pos ;
             
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(Car_M));
                 
@@ -650,8 +645,8 @@ glm::mat4 parallel(double r, double aspect, double n, double f){
 
 int build_program(){
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
-        {GL_FRAGMENT_SHADER, "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
+        {GL_VERTEX_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.vert"},
+        {GL_FRAGMENT_SHADER, "/Users/sungminkim/Desktop/OpenGLTest/OpenGLTest/cart.frag"},
         {GL_NONE, NULL}
     };
 
@@ -836,6 +831,13 @@ void keyboard(unsigned char key, int x, int y){
             is_booster_pressed = true ;
             cnt = 0;
             break;
+            
+        case 'c': case 'C':
+            if(toggle_cam == GOD_CAM){
+                toggle_cam = MY_CAM ;
+            }else{
+                toggle_cam = GOD_CAM ;
+            }
 //        case 32:
 //            car_speed = 0 ;
 //            theta = 0 ;
@@ -875,37 +877,37 @@ void motion(int x, int y){ // called back when the user move a mouse pointer wit
     
     if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_alt_active && is_shift_active){ /* Track Tool */
         mat4 VT(1.0f) ;
-        VT = transpose(camera.get_viewing()) ;
-        camera.eye += vec3(-dx*VT[0] + -dy*VT[1]) ;
-        camera.center += vec3(-dx*VT[0] + -dy*VT[1]) ;
+        VT = transpose(camera[toggle_cam].get_viewing()) ;
+        camera[toggle_cam].eye += vec3(-dx*VT[0] + -dy*VT[1]) ;
+        camera[toggle_cam].center += vec3(-dx*VT[0] + -dy*VT[1]) ;
     }else if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_shift_active && is_command_active){ /* Dolly Tool */
         // Mouse Middle Button + Command + Drag
-        vec3 disp = camera.eye - camera.center ;
+        vec3 disp = camera[toggle_cam].eye - camera[toggle_cam].center ;
         if(dy > 0){
-            camera.eye = camera.center + 0.95f * disp ;
+            camera[toggle_cam].eye = camera[toggle_cam].center + 0.95f * disp ;
         }else{
-            camera.eye = camera.center + 1.05f * disp ;
+            camera[toggle_cam].eye = camera[toggle_cam].center + 1.05f * disp ;
         }
     }else if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_command_active){ /* Zoom Tool */
         // Mouse Left Button + Command + Drag
         if(dy > 0){
-            camera.zoom_factor *= 0.95f ;
+            camera[toggle_cam].zoom_factor *= 0.95f ;
         }else{
-            camera.zoom_factor *= 1.05f ;
+            camera[toggle_cam].zoom_factor *= 1.05f ;
         }
     }else if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_alt_active){ /* Tumble Tool */
-        vec4 disp(camera.eye - camera.center, 1) ;
+        vec4 disp(camera[toggle_cam].eye - camera[toggle_cam].center, 1) ;
         
         GLfloat alpha = 2.0f;
         mat4 V(1.0f), Rx(1.0f), Ry(1.0f), R(1.0f) ;
         
         
-        V = camera.get_viewing() ;
+        V = camera[toggle_cam].get_viewing() ;
         Rx = rotate(mat4(1.0f), alpha*dy, vec3(transpose(V)[0])) ;
         Ry = rotate(mat4(1.0f), -alpha*dx, vec3(0,1,0)) ;
         R = Ry * Rx ;
-        camera.eye = camera.center + vec3(R*disp) ;
-        camera.up = mat3(R) * camera.up ;
+        camera[toggle_cam].eye = camera[toggle_cam].center + vec3(R*disp) ;
+        camera[toggle_cam].up = mat3(R) * camera[toggle_cam].up ;
     }
     
     mouse_pos[0] = x ;
