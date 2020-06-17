@@ -187,7 +187,7 @@ Camera camera[2];
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA |GLUT_DOUBLE| GLUT_DEPTH |GLUT_3_2_CORE_PROFILE);
-    glutInitWindowSize(1024, 1024);
+    glutInitWindowSize(2048, 2048);
     glutCreateWindow(argv[0]);
 
     glewExperimental = GL_TRUE;
