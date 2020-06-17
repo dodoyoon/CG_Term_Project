@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  OpenGLTest
-//
-//  Created by 김성민 on 2020/03/07.
-//  Copyright © 2020 Sung Min Kim. All rights reserved.
-//
-
 #define GL_SILENCE_DEPRECATION
 
 #include <iostream>
@@ -50,7 +42,7 @@ using namespace tinyobj;
 
 GLuint program;
 int shading_mode = 1;
-bool isSportsCar = true ; // 나중에 바꿔줘
+bool isSportsCar = true ;
 bool is_End = false;
 GLfloat acceleration_rate = 0.0f ;
 
@@ -92,11 +84,8 @@ bool is_tex_valid = false;
 
 // Direction Key offset for the object
 GLfloat car_speed = 0.0f ;
-GLfloat theta = 0.0f ;
+GLfloat theta = 0.01f ;
 GLfloat accel = 1.0f;
-//GLfloat deltacp = 0.0f;
-//GLfloat deltath = 0.0f;
-//GLfloat deltay = 0.0f;
 
 // Track the car position
 vec3 car_pos(1.0f) ;
@@ -288,9 +277,6 @@ void init(){
     
     
     /* Set the initial camera position */
-//    vec3 normalized_vec = (camera.center + vec3(0.0f, 0.0f, 1.0f)) - camera.center ;
-//    normalized_vec = normalize(normalized_vec) ;
-    
     camera[GOD_CAM].eye = camera[GOD_CAM].center + vec3(0.0f, 0.0f, 1.0f) ;
     camera[GOD_CAM].eye += vec3(0.0f, 1.0f, 8.0f) ;
     
@@ -343,17 +329,9 @@ void render(int color_mode){
         acceleration_rate = 2.0f;
         speed = acceleration_rate * 0.01;
         car_speed += speed ;
-//        cout << "speed: " << speed << endl ;
-
-//        if(is_left_pressed){
-//            theta += 0.003 ;
-//         }else if(is_right_pressed){
-//            theta -= 0.003 ;
-//        }
         
         if(is_booster_pressed == true){
             int time = 2000;
-//            cout << "cnt : "<<cnt<<'\n';
             if(cnt > time){
                 is_booster_pressed = false;
                 accel = 1.0f;
@@ -373,11 +351,6 @@ void render(int color_mode){
     else if(is_back_pressed){
         speed = - acceleration_rate * 0.01;
         car_speed -= 0.01 ;
-//        if(is_left_pressed){
-//            theta -= 0.003 ;
-//        }else if(is_right_pressed){
-//            theta += 0.003 ;
-//        }
     }
     else{
         if(acceleration_rate > 0){
@@ -461,10 +434,10 @@ void render(int color_mode){
             }else if(i == CAR){ // Car
                 glUniform1i(UVAR("isSportsCar"), 1);
                 if(is_left_pressed){
-                    M = rotate(M, 0.01f, vec3(0.f, 1.f, 0.f)) ;
+                    M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
                 }
                 else if(is_right_pressed){
-                    M = rotate(M, -0.01f, vec3(0.f, 1.f, 0.f)) ;
+                    M = rotate(M, -theta, vec3(0.f, 1.f, 0.f)) ;
                 }
                 M = translate(M, vec3(0.f,0.f,speed)) ;
                 
@@ -479,9 +452,7 @@ void render(int color_mode){
                         }
                     }
                 }
-                
-//                cout <<"camera : "<< camera[toggle_cam].center[0] <<" "<< camera[toggle_cam].center[1] <<" "<< camera[toggle_cam].center[2]<<'\n';
-                
+                                
                 if(camera[toggle_cam].center[0]>-75.0 && camera[toggle_cam].center[0]<-73.0 &&
                    camera[toggle_cam].center[2]>-21.0 && camera[toggle_cam].center[0]<-17.0){
                     is_End = true;
@@ -667,11 +638,6 @@ void mouse (int button, int state, int x, int y){
         unsigned char res[4] ;
         int height = glutGet(GLUT_WINDOW_HEIGHT) ;
         glReadPixels(x, height-y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res) ;
-        
-//        switch(res[0]){
-//            case 1: printf("The earth is clicked!\n"); break ;
-//            case 2: printf("The moon is clicked\n"); break ;
-//        }
     }
     
     button_pressed[button] = state ;
@@ -682,7 +648,6 @@ void mouse (int button, int state, int x, int y){
 static bool has_file(const char* filepath){
     FILE * fp ;
     fp = fopen(filepath, "rb") ;
-//    cout << ">>> has_file filepath: " << filepath << " , " << fp << endl ;
     
     if(fp == NULL){
         fclose(fp) ;
@@ -845,14 +810,6 @@ void keyboard(unsigned char key, int x, int y){
             }else{
                 toggle_cam = GOD_CAM ;
             }
-//        case 32:
-//            car_speed = 0 ;
-//            theta = 0 ;
-//            is_back_pressed = false ;
-//            is_forward_pressed = false ;
-//            is_right_pressed = false ;
-//            is_left_pressed = false ;
-//            break ;
     }
 }
 
