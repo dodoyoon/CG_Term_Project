@@ -438,17 +438,19 @@ void render(int color_mode){
                 else if(is_right_pressed){
                     M = rotate(M, -0.01f, vec3(0.f, 1.f, 0.f)) ;
                 }
+                    
+                if(is_forward_pressed){
+                    R = rotate(R, -0.90f, vec3(1.f, 0.f, 0.f));
+                }else if(is_back_pressed){
+                    R = rotate(R, 0.45f, vec3(1.f, 0.f, 0.f));
+                }
                 
                 M = translate(M, vec3(0.0f , 0.0f, speed)) ;
                 M = translate(M, vec3(0.1, 0.2, 0.4f));
                 
-//                if(is_forward_pressed){
-//                    R = rotate(R, -0.90f, vec3(1.f, 0.f, 0.f));
-//                }else if(is_back_pressed){
-//                    R = rotate(R, 0.45f, vec3(1.f, 0.f, 0.f));
-//                }
                 
-                Player_M = Player_M * M * R;
+                
+                Player_M = Player_M * M * R ;
                 
                 glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(Player_M));
                 
@@ -474,12 +476,13 @@ void render(int color_mode){
                     }
                 }
                 
-                if(world_coord[0][0]<0.003 && world_coord[0][0]>0.002 &&
-                   world_coord[2][0]<0.03 && world_coord[2][0]>0.01 &&
-                   world_coord[0][2]<-0.04 && world_coord[0][2]>-0.06){
+//                cout <<"camera : "<< camera[toggle_cam].center[0] <<" "<< camera[toggle_cam].center[1] <<" "<< camera[toggle_cam].center[2]<<'\n';
+                
+                if(camera[toggle_cam].center[0]>-75.0 && camera[toggle_cam].center[0]<-73.0 &&
+                   camera[toggle_cam].center[2]>-21.0 && camera[toggle_cam].center[0]<-17.0){
                     is_End = true;
                     printf("**END***\n");
-                    
+
                 }
                 
                 Car_M*=M;
