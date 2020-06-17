@@ -53,6 +53,9 @@ bool isSportsCar = true ; // 나중에 바꿔줘
 bool is_End = false;
 GLfloat acceleration_rate = 0.0f ;
 
+mat4 Car_M(1.0f);
+mat4 Player_M(1.0f);
+
 /* City, Patrick, Audi */
 const char* model_files [NUM_OF_MODELS] = {
     "/Users/seungbin/Desktop/OpenGLTest/OpenGLTest/project_obj/Car/LEGO_CAR_B2.obj",
@@ -88,7 +91,6 @@ bool is_tex_valid = false;
 
 // Direction Key offset for the object
 GLfloat car_speed = 0.0f ;
-GLfloat pre_car_speed = 0.0f ;
 GLfloat theta = 0.0f ;
 GLfloat accel = 1.0f;
 //GLfloat deltacp = 0.0f;
@@ -287,9 +289,14 @@ void init(){
     camera.eye += vec3(0.0f, 1.0f, 8.0f) ;
 
 
+    Car_M = rotate(Car_M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
+    Player_M = rotate(Player_M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
+    Player_M = translate(Player_M, vec3(0.1, 0.2, 0.4f));
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 }
+
+GLfloat pre_speed = 0.0f;
 
 void render(int color_mode){
     using namespace glm;
@@ -312,7 +319,6 @@ void render(int color_mode){
     mat4 T(1.0f);
     mat4 P = camera.get_projection(aspect);
     
-//    mat4 Car_M(1.0f);
     
     location = glGetUniformLocation(program, "V");
     glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(V));
@@ -330,11 +336,11 @@ void render(int color_mode){
         car_speed += speed ;
 //        cout << "speed: " << speed << endl ;
 
-        if(is_left_pressed){
-            theta += 0.003 ;
-         }else if(is_right_pressed){
-            theta -= 0.003 ;
-        }
+//        if(is_left_pressed){
+//            theta += 0.003 ;
+//         }else if(is_right_pressed){
+//            theta -= 0.003 ;
+//        }
         
         if(is_booster_pressed == true){
             int time = 2000;
@@ -350,30 +356,44 @@ void render(int color_mode){
                 accel += 0.02f;
             }
             cnt += 3;
-            car_speed += 0.01f * accel;
+            speed += 0.01f * accel;
         }
 
         
     }
     else if(is_back_pressed){
+        speed = - acceleration_rate * 0.01;
         car_speed -= 0.01 ;
-        if(is_left_pressed){
-            theta -= 0.003 ;
-        }else if(is_right_pressed){
-            theta += 0.003 ;
-        }
+//        if(is_left_pressed){
+//            theta -= 0.003 ;
+//        }else if(is_right_pressed){
+//            theta += 0.003 ;
+//        }
     }
     else{
+        cout <<" acceleration_rate : "<<acceleration_rate<<'\n';
         if(acceleration_rate > 0){
-            acceleration_rate -= 0.01;
-            if(acceleration_rate<0){
-                acceleration_rate = 0.0f;
+            cout << " pre_speed : "<<pre_speed <<'\n';
+            if(pre_speed > 0){
+                acceleration_rate -= 0.01;
+                if(acceleration_rate<0){
+                    acceleration_rate = 0.0f;
+                }
+                speed = acceleration_rate * 0.001;
             }
-            speed = acceleration_rate * 0.001;
+            else if(pre_speed < 0){
+                acceleration_rate -= 0.01;
+                if(acceleration_rate<0){
+                    acceleration_rate = 0.0f;
+                }
+                speed = - acceleration_rate * 0.001;
+            }
             car_speed += speed ;
 //            cout << "speed: " << speed << endl ;
         }
     }
+    
+    pre_speed = speed;
     
     
     if(car_speed!=0.0f){
@@ -384,33 +404,56 @@ void render(int color_mode){
         V = camera.get_viewing() ;
     }
 
-
     if(is_obj_valid){
         for(int i=0; i<NUM_OF_MODELS; ++i){
             glBindVertexArray(vao[i]);
             
             location = glGetUniformLocation(program, "M");
             mat4 M(1.0f);
+            mat4 R(1.0f);
             
             if(i == PATRICK){ // Patrick
                 glUniform1i(UVAR("isSportsCar"), 0);
-                M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
-                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
-                M = translate(M, vec3(0.0f , 0.0f, car_speed)) ;
-                M = translate(M, vec3(0.15f, 0.2f, 0.35f)) ;// move patrick to the car sit
                 
-                if(is_forward_pressed){
-                    M = rotate(M, -0.90f, vec3(1.f, 0.f, 0.f));
-                }else if(is_back_pressed){
-                    M = rotate(M, 0.45f, vec3(1.f, 0.f, 0.f));
+                M = translate(M, vec3(-0.1, -0.2, -0.4f));
+                
+                if(is_left_pressed){
+                    M = rotate(M, 0.01f, vec3(0.f, 1.f, 0.f)) ;
+                }
+                else if(is_right_pressed){
+                    M = rotate(M, -0.01f, vec3(0.f, 1.f, 0.f)) ;
                 }
                 
-                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+                M = translate(M, vec3(0.0f , 0.0f, speed)) ;
+                M = translate(M, vec3(0.1, 0.2, 0.4f));
+                
+//                if(is_forward_pressed){
+//                    R = rotate(R, -0.90f, vec3(1.f, 0.f, 0.f));
+//                }else if(is_back_pressed){
+//                    R = rotate(R, 0.45f, vec3(1.f, 0.f, 0.f));
+//                }
+                
+                Player_M = Player_M * M * R;
+                
+                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(Player_M));
+                
+//                for(int y=0; y<4; y++){
+//                    for(int x=0; x<4; x++){
+//                        R[y][x] = 1/R[y][x];
+//                    }
+//                }
+//                Player_M = Player_M  * R;
+                
             }else if(i == CAR){ // Car
                 glUniform1i(UVAR("isSportsCar"), 1);
-                M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
-                M = rotate(M, theta, vec3(0.f, 1.f, 0.f)) ;
-                M = translate(M, vec3(0.f,0.f,car_speed)) ;
+//                M = rotate(M, 3.0f, vec3(0.f, 1.f, 0.f)) ;
+                if(is_left_pressed){
+                    M = rotate(M, 0.01f, vec3(0.f, 1.f, 0.f)) ;
+                }
+                else if(is_right_pressed){
+                    M = rotate(M, -0.01f, vec3(0.f, 1.f, 0.f)) ;
+                }
+                M = translate(M, vec3(0.f,0.f,speed)) ;
                 
 //                for(int x=0; x<4; x++){
 //                    for(int y=0; y<4; y++){
@@ -442,16 +485,17 @@ void render(int color_mode){
                     
                 }
                 
+                Car_M*=M;
+                
                 // Track the car's coordinates
                 vec4 pos = vec4(1.0f, 0.0f, 1.0f, 1.0f) ;
-                pos = M * pos ; // apply transformation matrix to pos
+                pos = Car_M * pos ; // apply transformation matrix to pos
                 car_pos = vec3(pos.x, pos.y, pos.z) ;
                 camera.center = car_pos ;
                 
                 
-                
-                pre_car_speed = car_speed;
-                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(M));
+            
+                glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(Car_M));
                 
             }else if(i == CITY){ // City
                 glUniform1i(UVAR("isSportsCar"), 0);
