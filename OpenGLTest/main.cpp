@@ -220,7 +220,7 @@ int main(int argc, char** argv) {
 }
 
 void Manual(){
-    printf("\n########## Key Info ##########\n") ;
+    printf("\n########## Manual ##########\n") ;
     printf("UP KEY    : straight\n");
     printf("DOWN KEY  : back\n");
     printf("RIGHT KEY : turn right\n");
@@ -833,7 +833,7 @@ void keyboard(unsigned char key, int x, int y){
             printf("phong shading\n");
             glutPostRedisplay();
             break;
-        case 'z':
+        case 'z': case 'Z':
             is_booster_pressed = true ;
             cnt = 0;
             break;
