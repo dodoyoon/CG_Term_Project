@@ -229,6 +229,7 @@ void Manual(){
     printf("2         : phong shading\n");
     printf("z KEY     : booster\n");
     printf("c KEY     : toggle camera\n");
+    printf("Command + Mouse Left Button + Drag : Zoom Tool\n");
 }
 
 void init(){
@@ -866,54 +867,13 @@ void motion(int x, int y){ // called back when the user move a mouse pointer wit
     GLfloat dx = 1.f*(x - mouse_pos[0]) / w ;
     GLfloat dy = -1.f*(y - mouse_pos[1]) / h ;
     
-    
-    
-    /* 설명
-     Mouse Middle Button은 Mouse Left Button + Shift로 설정하였습니다.
-     
-     Tumble Tool: Alt + Mouse Left Button + Drag
-     Track Tool: Shift + Alt + Mouse Left Button + Drag
-     Dolly Tool: Shift + Command + Mouse Left Button + Drag
-     Zoom Tool: Command + Mouse Left Button + Drag
-
-     */
-    
-    
-    
-    
-    if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_alt_active && is_shift_active){ /* Track Tool */
-        mat4 VT(1.0f) ;
-        VT = transpose(camera[toggle_cam].get_viewing()) ;
-        camera[toggle_cam].eye += vec3(-dx*VT[0] + -dy*VT[1]) ;
-        camera[toggle_cam].center += vec3(-dx*VT[0] + -dy*VT[1]) ;
-    }else if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_shift_active && is_command_active){ /* Dolly Tool */
-        // Mouse Middle Button + Command + Drag
-        vec3 disp = camera[toggle_cam].eye - camera[toggle_cam].center ;
-        if(dy > 0){
-            camera[toggle_cam].eye = camera[toggle_cam].center + 0.95f * disp ;
-        }else{
-            camera[toggle_cam].eye = camera[toggle_cam].center + 1.05f * disp ;
-        }
-    }else if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_command_active){ /* Zoom Tool */
+    if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_command_active){ /* Zoom Tool */
         // Mouse Left Button + Command + Drag
         if(dy > 0){
             camera[toggle_cam].zoom_factor *= 0.95f ;
         }else{
             camera[toggle_cam].zoom_factor *= 1.05f ;
         }
-    }else if(button_pressed[GLUT_LEFT_BUTTON] == GLUT_DOWN && is_alt_active){ /* Tumble Tool */
-        vec4 disp(camera[toggle_cam].eye - camera[toggle_cam].center, 1) ;
-        
-        GLfloat alpha = 2.0f;
-        mat4 V(1.0f), Rx(1.0f), Ry(1.0f), R(1.0f) ;
-        
-        
-        V = camera[toggle_cam].get_viewing() ;
-        Rx = rotate(mat4(1.0f), alpha*dy, vec3(transpose(V)[0])) ;
-        Ry = rotate(mat4(1.0f), -alpha*dx, vec3(0,1,0)) ;
-        R = Ry * Rx ;
-        camera[toggle_cam].eye = camera[toggle_cam].center + vec3(R*disp) ;
-        camera[toggle_cam].up = mat3(R) * camera[toggle_cam].up ;
     }
     
     mouse_pos[0] = x ;
