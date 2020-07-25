@@ -1,5 +1,5 @@
 # CG_Term_Project
-UNCRAZY RACING
+UNCRAZY RACING <br>
 Term Project for 2020-01 Computer Graphics Course
 
 [src](https://github.com/greentealemonade/CG_Term_Project) | 
